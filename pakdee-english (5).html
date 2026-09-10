@@ -1,0 +1,1443 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PakDee English — ครูส้ม</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Mitr:wght@400;500;600;700&family=Sarabun:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --cream:#FFF6E9;
+    --ink:#2A1B0E;
+    --orange:#FF7A1A;
+    --orange-dark:#E85D00;
+    --peel:#FFB35C;
+    --leaf:#4FA35C;
+    --yellow:#FFD23F;
+    --mint:#4FCB90;
+    --lav:#8C7CFF;
+    --pink:#FF6FA5;
+    --card:#FFFFFF;
+    --radius:22px;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{margin:0;background:var(--cream);color:var(--ink);font-family:'Sarabun',sans-serif;line-height:1.6;}
+  h1,h2,h3,.display{font-family:'Mitr','Sarabun',sans-serif;margin:0;}
+  a{color:inherit;} img{max-width:100%;display:block;}
+
+  .grain{position:fixed;inset:0;pointer-events:none;z-index:0;opacity:.05;
+    background-image:radial-gradient(var(--ink) 1px, transparent 1px);background-size:18px 18px;}
+
+  /* ---------- MASCOT (ครูส้ม) — cute version w/ white eyes + blush ---------- */
+  .mascot{position:relative;border-radius:50%;
+    background:
+      radial-gradient(circle at 30% 68%, #FF93AC 0 9%, transparent 10%),
+      radial-gradient(circle at 70% 68%, #FF93AC 0 9%, transparent 10%),
+      radial-gradient(circle at 34% 28%, var(--peel), var(--orange) 72%);
+    box-shadow:inset -6px -8px 0 rgba(0,0,0,.12);
+    flex-shrink:0;}
+  .mascot::before{content:"";position:absolute;top:-9%;left:50%;transform:translateX(-50%) rotate(-8deg);
+    width:26%;height:20%;background:var(--leaf);border-radius:0 100% 0 100%;}
+  .mascot .eyes{position:absolute;top:36%;left:50%;transform:translateX(-50%);display:flex;gap:20%;z-index:2;}
+  .mascot .eyes span{width:15px;height:15px;background:#fff;border:2px solid var(--ink);border-radius:50%;
+    display:block;position:relative;}
+  .mascot .eyes span::after{content:"";position:absolute;width:46%;height:46%;top:27%;left:27%;
+    background:var(--ink);border-radius:50%;}
+  .mascot .mouth{position:absolute;top:58%;left:50%;transform:translateX(-50%);
+    width:16%;height:9%;border-bottom:3px solid var(--ink);border-radius:0 0 50% 50%;z-index:2;}
+  .mascot.sad .mouth{border-bottom:none;border-top:3px solid var(--ink);border-radius:50% 50% 0 0;top:60%;}
+  .mascot.sad .eyes span::after{border-radius:50% 50% 0 0;top:36%;}
+  .mascot.think .mouth{width:12%;border-radius:50%;border:2.5px solid var(--ink);top:58%;}
+  .mascot.happy .eyes span{height:6px;border-radius:0 0 12px 12px;border-top:none;}
+  .mascot.happy .eyes span::after{display:none;}
+  /* ---- ส้มงื้อ (shy/happy — correct answer) ---- */
+  .mascot.shy .eyes span{height:6px;border-radius:0 0 12px 12px;border-top:none;background:#fff;}
+  .mascot.shy .eyes span::after{display:none;}
+  .mascot.shy .mouth{width:11%;height:11%;border-radius:50%;border:2.5px solid var(--ink);top:56%;}
+  .mascot.shy::after{content:"🙏";position:absolute;bottom:2%;left:50%;transform:translateX(-50%);
+    font-size:1.15em;z-index:3;filter:drop-shadow(0 1px 0 rgba(0,0,0,.15));}
+  .mascot.shy{box-shadow:inset -6px -8px 0 rgba(0,0,0,.12), 0 0 0 4px rgba(255,111,165,.25);}
+  /* ---- ส้มร้องไห้ (crying — wrong answer) ---- */
+  .mascot.cry .mouth{border-bottom:none;border-top:3px solid var(--ink);border-radius:50% 50% 0 0;top:62%;width:20%;}
+  .mascot.cry .eyes span::after{border-radius:50% 50% 0 0;top:38%;}
+  .mascot.cry::after{content:"";position:absolute;left:29%;top:45%;width:11%;height:15%;background:#5AC8FA;
+    border-radius:0 60% 60% 60%;transform:rotate(-6deg);box-shadow:2.35em 0 0 0 #5AC8FA;z-index:3;
+    animation:tearfall 1s ease-in infinite;}
+  @keyframes tearfall{0%{opacity:0;transform:translateY(0) rotate(-6deg) scale(.5);}30%{opacity:1;}100%{opacity:0;transform:translateY(10px) rotate(-6deg) scale(1);}}
+  .mascot.xl{width:130px;height:130px;font-size:34px;} .mascot.xl .eyes span{width:22px;height:22px;}
+  .mascot.lg{width:80px;height:80px;font-size:21px;} .mascot.lg .eyes span{width:16px;height:16px;}
+  .mascot.md{width:56px;height:56px;font-size:15px;} .mascot.md .eyes span{width:12px;height:12px;border-width:1.6px;}
+  .mascot.sm{width:36px;height:36px;font-size:10px;} .mascot.sm .eyes span{width:9px;height:9px;border-width:1.3px;}
+  @keyframes bob{0%,100%{transform:translateY(0) rotate(-3deg);}50%{transform:translateY(-10px) rotate(3deg);}}
+  .mascot.bob{animation:bob 2.6s ease-in-out infinite;}
+  @keyframes pop{0%{transform:scale(.6);}60%{transform:scale(1.15);}100%{transform:scale(1);}}
+  .pop-in{animation:pop .35s ease-out;}
+  @keyframes shake{0%,100%{transform:translateX(0);}25%{transform:translateX(-6px);}75%{transform:translateX(6px);}}
+  .shake{animation:shake .35s ease-in-out;}
+  @keyframes floaty{0%,100%{transform:translateY(0);}50%{transform:translateY(-4px);}}
+
+  /* ---------- NAV ---------- */
+  .nav{position:sticky;top:0;z-index:50;display:flex;align-items:center;justify-content:space-between;
+    padding:10px 24px;background:rgba(255,246,233,.92);backdrop-filter:blur(6px);border-bottom:3px solid var(--ink);
+    flex-wrap:wrap;gap:10px;}
+  .logo{display:flex;align-items:center;gap:10px;font-family:'Mitr';font-weight:700;font-size:1.2rem;}
+  .nav-links{display:flex;gap:18px;font-weight:500;font-size:.92rem;align-items:center;flex-wrap:wrap;}
+  .nav-links a{text-decoration:none;}
+  .nav-links a:hover{color:var(--orange-dark);}
+  .score-chip{background:var(--yellow);border:2.5px solid var(--ink);border-radius:999px;padding:6px 12px;
+    font-family:'Mitr';font-weight:700;font-size:.82rem;display:flex;align-items:center;gap:6px;transition:transform .2s;}
+  .score-chip.bump{transform:scale(1.18);}
+  .courage-chip{background:var(--lav);color:#fff;border:2.5px solid var(--ink);border-radius:999px;padding:6px 12px;
+    font-family:'Mitr';font-weight:700;font-size:.82rem;display:flex;align-items:center;gap:6px;transition:transform .2s;}
+  .courage-chip.bump{transform:scale(1.18);}
+  .nav-cta{background:var(--ink);color:var(--cream);border:none;padding:9px 16px;border-radius:999px;
+    font-family:'Mitr';font-weight:600;cursor:pointer;font-size:.88rem;}
+  .nav-cta:hover{background:var(--orange-dark);}
+
+  /* ---------- HERO ---------- */
+  .hero{position:relative;z-index:1;max-width:1180px;margin:0 auto;padding:52px 28px 36px;
+    display:grid;grid-template-columns:1.1fr .9fr;gap:40px;align-items:center;}
+  .eyebrow-chip{display:inline-flex;align-items:center;gap:8px;background:var(--yellow);border:2.5px solid var(--ink);
+    padding:6px 14px;border-radius:999px;font-weight:600;font-size:.85rem;transform:rotate(-2deg);}
+  .hero h1{font-size:clamp(2.2rem,5vw,3.5rem);line-height:1.08;margin:16px 0 18px;}
+  .hero h1 .pop{color:var(--orange);}
+  .hero p{font-size:1.05rem;max-width:46ch;margin-bottom:24px;}
+  .hero-ctas{display:flex;gap:14px;flex-wrap:wrap;}
+  .btn{font-family:'Mitr';font-weight:600;border:3px solid var(--ink);padding:13px 26px;border-radius:999px;
+    cursor:pointer;font-size:1rem;box-shadow:5px 5px 0 var(--ink);transition:transform .12s,box-shadow .12s;}
+  .btn:active{transform:translate(3px,3px);box-shadow:2px 2px 0 var(--ink);}
+  .btn-primary{background:var(--orange);color:#fff;}
+  .btn-ghost{background:var(--cream);color:var(--ink);}
+
+  .hero-art{position:relative;display:flex;flex-direction:column;align-items:center;gap:16px;}
+  .hero-bubble{background:#fff;border:3px solid var(--ink);border-radius:20px;padding:12px 16px;font-weight:600;
+    box-shadow:5px 5px 0 var(--ink);max-width:260px;transform:rotate(-2deg);animation:floaty 3.4s ease-in-out infinite;}
+  .hero-bubble.b2{transform:rotate(2deg);animation-delay:.6s;}
+  .hero-bubble small{display:block;font-weight:400;opacity:.7;font-size:.75rem;margin-top:3px;}
+
+  /* ---------- SECTIONS ---------- */
+  .section{max-width:1180px;margin:0 auto;padding:48px 28px;position:relative;z-index:1;}
+  .section-head{max-width:640px;margin-bottom:28px;}
+  .section-head h2{font-size:clamp(1.6rem,3.4vw,2.3rem);}
+  .section-head p{color:#5a4a3a;margin-top:10px;}
+
+  /* ---------- teacher/research collapsible ---------- */
+  details.teacher-toggle{max-width:1180px;margin:8px auto 0;padding:0 28px;}
+  details.teacher-toggle summary{list-style:none;cursor:pointer;font-family:'Mitr';font-weight:600;
+    display:inline-flex;align-items:center;gap:8px;background:#fff;border:2.5px dashed var(--ink);
+    border-radius:999px;padding:9px 18px;font-size:.88rem;}
+  details.teacher-toggle summary::-webkit-details-marker{display:none;}
+  details.teacher-toggle summary .chevron{transition:transform .2s;}
+  details.teacher-toggle[open] summary .chevron{transform:rotate(180deg);}
+  .teacher-toggle-body{margin-top:18px;}
+
+  .pillars{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;}
+  .pillar{background:var(--card);border:3px solid var(--ink);border-radius:var(--radius);padding:20px 18px;
+    box-shadow:6px 6px 0 var(--ink);}
+  .pillar .num{width:34px;height:34px;border-radius:50%;background:var(--ink);color:var(--cream);
+    display:flex;align-items:center;justify-content:center;font-family:'Mitr';font-weight:700;margin-bottom:10px;font-size:.95rem;}
+  .pillar h3{font-size:1.02rem;margin-bottom:6px;} .pillar p{font-size:.86rem;color:#5a4a3a;margin:0;}
+
+  .research-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:22px;}
+  .research-card{border:3px solid var(--ink);border-radius:var(--radius);padding:20px;box-shadow:6px 6px 0 var(--ink);}
+  .research-card.comm{background:#FFE3D2;} .research-card.att{background:#FFF3C4;} .research-card.conf{background:#E3F7EA;}
+  .research-card h3{font-size:1.02rem;margin-bottom:4px;}
+  .research-card .goal{font-size:.8rem;color:#5a4a3a;margin-bottom:10px;font-style:italic;}
+  .research-card ul{margin:0;padding-left:18px;font-size:.85rem;display:grid;gap:6px;}
+
+  /* ---------- lesson path (Duolingo-ish) ---------- */
+  .path-wrap{display:flex;align-items:center;justify-content:center;gap:0;flex-wrap:wrap;margin-bottom:30px;
+    background:#fff;border:3px solid var(--ink);border-radius:28px;padding:26px 18px;box-shadow:8px 8px 0 var(--ink);}
+  .path-node{display:flex;flex-direction:column;align-items:center;gap:8px;cursor:pointer;position:relative;}
+  .path-circle{width:66px;height:66px;border-radius:50%;border:3px solid var(--ink);display:flex;align-items:center;
+    justify-content:center;font-family:'Mitr';font-weight:700;font-size:1.5rem;background:var(--yellow);
+    box-shadow:4px 4px 0 var(--ink);transition:transform .15s;}
+  .path-node:hover .path-circle{transform:translateY(-3px);}
+  .path-node.locked .path-circle{background:#e3d9c8;color:#9a8b74;box-shadow:4px 4px 0 #c9bba4;cursor:not-allowed;}
+  .path-node.locked:hover .path-circle{transform:none;}
+  .path-node.locked{cursor:not-allowed;}
+  .path-node.done .path-circle{background:var(--mint);}
+  .path-label{font-family:'Mitr';font-weight:600;font-size:.76rem;text-align:center;max-width:90px;}
+  .path-stars{font-size:.78rem;letter-spacing:1px;}
+  .path-line{width:44px;height:4px;background:repeating-linear-gradient(90deg,var(--ink) 0 8px, transparent 8px 14px);
+    margin:0 -2px 30px;flex-shrink:0;}
+  .path-node.shake .path-circle{animation:shake .35s ease-in-out;}
+  @media(max-width:700px){ .path-line{display:none;} .path-wrap{gap:16px;} }
+
+  .level-chip{background:var(--lav);color:#fff;border:2.5px solid var(--ink);border-radius:999px;padding:6px 12px;
+    font-family:'Mitr';font-weight:700;font-size:.82rem;display:flex;align-items:center;gap:6px;}
+  .unit-progress-chip{background:rgba(255,255,255,.9);color:var(--ink);border-radius:999px;padding:4px 12px;
+    font-family:'Mitr';font-weight:700;font-size:.78rem;display:inline-flex;align-items:center;gap:5px;margin-top:6px;}
+
+  .toast{position:fixed;bottom:90px;right:22px;z-index:70;background:var(--ink);color:var(--cream);padding:12px 18px;
+    border-radius:14px;font-family:'Mitr';font-weight:600;font-size:.88rem;box-shadow:5px 5px 0 rgba(0,0,0,.2);
+    opacity:0;transform:translateY(10px);transition:opacity .25s, transform .25s;pointer-events:none;max-width:260px;}
+  .toast.show{opacity:1;transform:translateY(0);}
+
+  /* ---------- unit accordion ---------- */
+  .unit-wrap{background:var(--card);border:3px solid var(--ink);border-radius:28px;box-shadow:8px 8px 0 var(--ink);
+    overflow:hidden;margin-bottom:20px;}
+  .unit-head{background:linear-gradient(120deg,var(--pink),var(--orange));color:#fff;padding:22px 26px;
+    display:flex;align-items:center;gap:18px;cursor:pointer;list-style:none;}
+  .unit-head::-webkit-details-marker{display:none;}
+  .unit-badge{background:#fff;color:var(--pink);border-radius:50%;width:64px;height:64px;
+    display:flex;flex-direction:column;align-items:center;justify-content:center;border:3px solid var(--ink);
+    font-family:'Mitr';flex-shrink:0;}
+  .unit-badge span{font-size:.62rem;font-weight:600;} .unit-badge strong{font-size:1.3rem;line-height:1;}
+  .unit-head h2{font-size:clamp(1.25rem,3vw,1.75rem);} .unit-head .sub{opacity:.92;font-size:.86rem;margin-top:3px;}
+  .unit-head .chevron{margin-left:auto;font-size:1.4rem;transition:transform .2s;flex-shrink:0;}
+  details[open] .unit-head .chevron{transform:rotate(180deg);}
+  .unit-wrap.locked{opacity:.55;}
+  .unit-wrap.locked .unit-head{background:linear-gradient(120deg,#b9b0a2,#9a8b74);cursor:not-allowed;}
+  .unit-wrap.locked .unit-badge{color:#9a8b74;}
+  .unit-wrap.locked .chevron{display:none;}
+  .unit-body{padding:26px 26px 30px;display:grid;gap:24px;}
+  .tag-row{display:flex;align-items:center;gap:10px;margin-bottom:12px;flex-wrap:wrap;}
+  .tag{font-family:'Mitr';font-weight:600;font-size:.82rem;background:var(--yellow);border:2.5px solid var(--ink);
+    border-radius:999px;padding:5px 14px;}
+  .tag.gram{background:var(--mint);} .tag.play{background:var(--lav);color:#fff;}
+  .hint{font-size:.8rem;color:#8a7862;}
+
+  .word-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(126px,1fr));gap:10px;perspective:600px;}
+  .word-chip{position:relative;height:56px;cursor:pointer;}
+  .word-inner{position:relative;width:100%;height:100%;transition:transform .45s;transform-style:preserve-3d;}
+  .word-chip.flipped .word-inner{transform:rotateY(180deg);}
+  .word-face{position:absolute;inset:0;backface-visibility:hidden;border-radius:14px;border:2px dashed var(--ink);
+    display:flex;align-items:center;justify-content:center;text-align:center;font-weight:600;font-size:.82rem;padding:4px;background:var(--cream);}
+  .word-face.back{transform:rotateY(180deg);background:var(--yellow);border-style:solid;}
+  .word-chip:hover .word-face.front{background:#FFE6C4;}
+  .word-face.front.card-back{background:linear-gradient(135deg,var(--peel),var(--orange));color:#fff;
+    font-size:1.5rem;border-style:solid;}
+  .word-chip:hover .word-face.front.card-back{background:linear-gradient(135deg,var(--peel),var(--orange));}
+  .word-chip.matched .word-face.back{background:var(--mint);}
+  .word-chip.matched{pointer-events:none;opacity:.88;}
+  .match-progress{font-family:'Mitr';font-weight:600;font-size:.85rem;margin:0 0 10px;color:#5a4a3a;}
+  .match-grid .word-chip{height:64px;}
+
+  .pattern-cards{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;}
+  .pattern-card{background:#FFF0DA;border:2.5px solid var(--ink);border-radius:16px;padding:14px 16px;}
+  .pattern-card .p1{font-weight:700;margin-bottom:4px;font-size:.94rem;} .pattern-card .p2{font-size:.85rem;color:#5a4a3a;}
+
+  .builder{background:#EFEBFF;border:3px solid var(--ink);border-radius:20px;padding:22px;}
+  .builder-row{display:flex;flex-wrap:wrap;gap:12px;align-items:center;margin-bottom:16px;}
+  select{font-family:'Sarabun';font-weight:600;font-size:1rem;border:2.5px solid var(--ink);border-radius:12px;
+    padding:10px 12px;background:#fff;cursor:pointer;}
+  .builder-output{font-family:'Mitr';font-size:1.2rem;background:#fff;border:3px solid var(--ink);border-radius:16px;
+    padding:15px 18px;min-height:28px;}
+  .check-btn{margin-top:14px;background:var(--ink);color:#fff;border:none;border-radius:999px;padding:11px 22px;
+    font-family:'Mitr';font-weight:600;cursor:pointer;}
+  .feedback{margin-top:14px;font-weight:600;display:none;padding:12px 16px;border-radius:14px;border:2.5px solid var(--ink);
+    align-items:center;gap:10px;}
+  .feedback.ok{display:flex;background:var(--mint);} .feedback.no{display:flex;background:#FFD1C7;}
+  .ask-teacher-inline{display:inline-flex;align-items:center;gap:8px;margin-top:14px;background:var(--cream);
+    border:2.5px dashed var(--ink);border-radius:999px;padding:9px 16px;cursor:pointer;font-weight:600;font-size:.87rem;}
+  .ask-teacher-inline:hover{background:var(--yellow);}
+
+  /* ---------- combo quiz ---------- */
+  .quiz-box{background:#FFF0DA;border:3px solid var(--ink);border-radius:20px;padding:22px;display:flex;gap:20px;align-items:flex-start;}
+  .quiz-main{flex:1;min-width:0;}
+  .quiz-sentence{font-family:'Mitr';font-size:1.08rem;margin-bottom:14px;}
+  .quiz-options{display:flex;gap:12px;flex-wrap:wrap;}
+  .quiz-opt{font-family:'Mitr';font-weight:600;border:2.5px solid var(--ink);background:#fff;border-radius:14px;
+    padding:11px 20px;cursor:pointer;font-size:.98rem;transition:transform .1s;}
+  .quiz-opt:hover:not(:disabled){background:var(--yellow);}
+  .quiz-progress{font-size:.8rem;color:#8a7862;margin-top:10px;font-weight:600;}
+  .quiz-reaction{margin-top:10px;font-family:'Mitr';font-weight:700;min-height:24px;}
+  .quiz-next{display:none;margin-top:12px;background:var(--ink);color:#fff;border:none;border-radius:999px;
+    padding:9px 18px;font-family:'Mitr';font-weight:600;cursor:pointer;}
+
+  /* ---------- speak ---------- */
+  .speak-box{background:var(--card);border:3px solid var(--ink);border-radius:var(--radius);padding:28px;box-shadow:8px 8px 0 var(--ink);
+    display:grid;grid-template-columns:auto 1fr;gap:26px;align-items:start;}
+  .speak-target{background:#FFF0DA;border:2.5px dashed var(--ink);border-radius:16px;padding:16px 20px;font-family:'Mitr';
+    font-size:1.1rem;margin-bottom:14px;}
+  .speak-target .th{display:block;font-family:'Sarabun';font-size:.8rem;color:#8a7862;margin-top:4px;font-weight:400;}
+  .mic-row{display:flex;align-items:center;gap:16px;flex-wrap:wrap;margin-bottom:14px;}
+  .mic-btn{width:72px;height:72px;border-radius:50%;background:var(--orange);border:3px solid var(--ink);
+    font-size:1.6rem;cursor:pointer;box-shadow:5px 5px 0 var(--ink);flex-shrink:0;}
+  .mic-btn.listening{background:var(--pink);animation:pulse 1s infinite;}
+  @keyframes pulse{0%{box-shadow:0 0 0 0 rgba(255,111,165,.55), 5px 5px 0 var(--ink);}70%{box-shadow:0 0 0 16px rgba(255,111,165,0), 5px 5px 0 var(--ink);}100%{box-shadow:0 0 0 0 rgba(255,111,165,0), 5px 5px 0 var(--ink);}}
+  .mic-hint{font-size:.84rem;color:#5a4a3a;}
+  .transcript-box{background:#F5F0FF;border:2.5px solid var(--ink);border-radius:14px;padding:14px 16px;font-family:'Mitr';
+    min-height:26px;margin-bottom:14px;}
+  .hype-feedback{padding:16px 18px;border-radius:16px;border:2.5px solid var(--ink);font-weight:700;display:none;
+    font-family:'Mitr';font-size:1rem;align-items:center;gap:10px;}
+  .hype-feedback.ok{display:flex;background:var(--mint);}
+  .hype-feedback.close{display:flex;background:var(--yellow);}
+  .hype-feedback.no{display:flex;background:#FFD1C7;}
+  .speak-next{margin-top:14px;background:var(--ink);color:#fff;border:none;border-radius:999px;padding:10px 20px;
+    font-family:'Mitr';font-weight:600;cursor:pointer;}
+  .type-fallback{display:flex;gap:8px;margin-top:6px;}
+  .type-fallback input{flex:1;border:2.5px solid var(--ink);border-radius:999px;padding:9px 14px;font-family:'Sarabun';}
+  .type-fallback button{background:var(--lav);color:#fff;border:none;border-radius:999px;padding:0 16px;font-family:'Mitr';font-weight:600;cursor:pointer;}
+  .no-support-note{font-size:.78rem;color:#a08a70;margin-top:6px;}
+
+  /* ---------- roleplay + missions ---------- */
+  .roleplay-panel{background:var(--ink);color:var(--cream);border-radius:28px;overflow:hidden;border:3px solid var(--ink);
+    display:grid;grid-template-columns:.9fr 1.1fr;}
+  .roleplay-left{padding:30px;display:flex;flex-direction:column;justify-content:center;gap:12px;}
+  .roleplay-left h2{color:#fff;font-size:1.6rem;} .roleplay-left p{color:#e7d8c8;font-size:.9rem;}
+  .scenario-chip{display:inline-block;background:var(--mint);color:var(--ink);border:2.5px solid var(--ink);
+    border-radius:999px;padding:6px 14px;font-weight:700;font-size:.78rem;width:fit-content;}
+  .mission-list{list-style:none;margin:6px 0 0;padding:0;display:grid;gap:8px;}
+  .mission-list li{display:flex;align-items:center;gap:10px;font-size:.86rem;background:rgba(255,255,255,.08);
+    border:2px solid rgba(255,255,255,.25);border-radius:12px;padding:8px 12px;transition:background .2s;}
+  .mission-list li.done{background:rgba(79,203,144,.35);border-color:var(--mint);text-decoration:line-through;opacity:.85;}
+  .mission-box{width:20px;height:20px;border-radius:6px;border:2px solid #fff;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:.72rem;}
+  .mission-list li.done .mission-box{background:var(--mint);}
+  .roleplay-right{background:#fff;color:var(--ink);padding:18px;display:flex;flex-direction:column;}
+  #chatlog,#rplog{flex:1;overflow-y:auto;max-height:300px;padding:6px 4px;display:flex;flex-direction:column;gap:10px;}
+  .msg{padding:11px 15px;border-radius:16px;max-width:82%;font-size:.9rem;border:2px solid var(--ink);}
+  .msg.teacher{background:var(--mint);align-self:flex-start;border-bottom-left-radius:4px;}
+  .msg.me{background:var(--yellow);align-self:flex-end;border-bottom-right-radius:4px;}
+  .chat-input-row{display:flex;gap:8px;margin-top:12px;}
+  .chat-input-row input{flex:1;border:2.5px solid var(--ink);border-radius:999px;padding:11px 16px;
+    font-family:'Sarabun';font-size:.92rem;}
+  .chat-input-row button{background:var(--orange);color:#fff;border:none;border-radius:999px;padding:0 20px;
+    font-family:'Mitr';font-weight:600;cursor:pointer;}
+  .quick-asks{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px;}
+  .quick-ask{font-size:.76rem;background:var(--cream);border:2px dashed var(--ink);border-radius:999px;
+    padding:6px 12px;cursor:pointer;}
+  .quick-ask:hover{background:var(--yellow);}
+  .mission-complete-banner{display:none;background:var(--yellow);border:2.5px solid var(--ink);border-radius:14px;
+    padding:10px 14px;font-family:'Mitr';font-weight:700;font-size:.86rem;margin-bottom:10px;text-align:center;}
+
+  /* ---------- recap / metacognition ---------- */
+  .recap-box{background:var(--card);border:3px solid var(--ink);border-radius:var(--radius);padding:26px;box-shadow:8px 8px 0 var(--ink);}
+  .recap-empty{font-size:.92rem;color:#8a7862;}
+  .recap-item{display:flex;gap:14px;align-items:flex-start;padding:12px 0;border-bottom:2px dashed #e3d5c2;}
+  .recap-item:last-child{border-bottom:none;}
+  .recap-icon{font-size:1.5rem;flex-shrink:0;}
+  .recap-item b{font-family:'Mitr';}
+  .recap-item p{margin:2px 0 0;font-size:.86rem;color:#5a4a3a;}
+
+  /* ---------- survey / mood check ---------- */
+  .survey-box{background:var(--card);border:3px solid var(--ink);border-radius:var(--radius);padding:26px;box-shadow:8px 8px 0 var(--ink);}
+  .survey-item{padding:14px 0;border-bottom:2px dashed #e3d5c2;}
+  .survey-item:last-of-type{border-bottom:none;}
+  .survey-q{font-weight:600;margin-bottom:10px;font-size:.94rem;}
+  .mood-row{display:flex;gap:10px;flex-wrap:wrap;}
+  .mood-btn{width:52px;height:52px;border-radius:50%;border:2.5px solid var(--ink);background:#fff;
+    font-size:1.4rem;cursor:pointer;display:flex;align-items:center;justify-content:center;}
+  .mood-btn.sel{background:var(--orange);transform:scale(1.12);}
+  .survey-feedback textarea{width:100%;border:2.5px solid var(--ink);border-radius:14px;padding:12px;font-family:'Sarabun';
+    font-size:.92rem;resize:vertical;min-height:70px;}
+  .survey-actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:18px;}
+  .survey-btn{font-family:'Mitr';font-weight:600;border:3px solid var(--ink);border-radius:999px;padding:11px 20px;
+    cursor:pointer;box-shadow:4px 4px 0 var(--ink);background:#fff;}
+  .survey-btn.pre{background:var(--yellow);} .survey-btn.post{background:var(--mint);}
+  .survey-result{margin-top:22px;display:none;}
+  .bar-row{display:flex;align-items:center;gap:12px;margin-bottom:10px;}
+  .bar-label{width:64px;font-size:.85rem;font-weight:600;flex-shrink:0;}
+  .bar-track{flex:1;background:#f1e7d8;border:2px solid var(--ink);border-radius:999px;height:22px;overflow:hidden;}
+  .bar-fill{height:100%;border-radius:999px;transition:width .6s ease;display:flex;align-items:center;justify-content:flex-end;
+    padding-right:8px;font-size:.72rem;font-weight:700;color:#fff;}
+  .bar-fill.pre{background:var(--peel);} .bar-fill.post{background:var(--orange);}
+  .survey-note{font-size:.85rem;margin-top:12px;color:#5a4a3a;}
+
+  /* ---------- teacher dashboard ---------- */
+  .dash-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:20px;}
+  .dash-stat{background:#FFF0DA;border:2.5px solid var(--ink);border-radius:16px;padding:16px;text-align:center;}
+  .dash-stat .n{font-family:'Mitr';font-size:1.6rem;font-weight:700;}
+  .dash-stat .l{font-size:.78rem;color:#5a4a3a;}
+  .dash-table{width:100%;border-collapse:collapse;font-size:.86rem;margin-top:10px;}
+  .dash-table th,.dash-table td{border:2px solid var(--ink);padding:8px 10px;text-align:left;}
+  .dash-table th{background:var(--yellow);font-family:'Mitr';}
+  .dash-note{font-size:.78rem;color:#8a7862;margin-top:14px;}
+  .dash-feedback-list{margin-top:14px;display:grid;gap:8px;}
+  .dash-feedback-list .fbline{background:#F5F0FF;border:2px solid var(--ink);border-radius:12px;padding:8px 12px;font-size:.85rem;}
+
+  .loop{display:flex;flex-wrap:wrap;gap:16px;justify-content:space-between;}
+  .loop-step{flex:1 1 210px;background:var(--card);border:3px solid var(--ink);border-radius:20px;padding:20px;}
+  .loop-step .icon{font-size:1.7rem;margin-bottom:8px;display:block;}
+  .loop-step h3{font-size:1rem;margin-bottom:6px;} .loop-step p{font-size:.84rem;color:#5a4a3a;margin:0;}
+  .loop-arrow{align-self:center;font-size:1.4rem;opacity:.4;}
+
+  .teacher-panel{display:grid;grid-template-columns:.9fr 1.1fr;background:var(--ink);color:var(--cream);
+    border-radius:28px;overflow:hidden;border:3px solid var(--ink);}
+  .teacher-left{padding:30px;display:flex;flex-direction:column;justify-content:center;gap:12px;}
+  .teacher-left h2{color:#fff;font-size:1.7rem;} .teacher-left p{color:#e7d8c8;font-size:.92rem;}
+  .teacher-right{background:#fff;color:var(--ink);padding:18px;display:flex;flex-direction:column;}
+
+  .fab{position:fixed;bottom:22px;right:22px;z-index:60;background:var(--orange);color:#fff;border:3px solid var(--ink);
+    border-radius:999px;padding:10px 20px 10px 10px;font-family:'Mitr';font-weight:600;cursor:pointer;
+    box-shadow:5px 5px 0 var(--ink);display:flex;align-items:center;gap:10px;}
+  .fab:hover{background:var(--orange-dark);}
+
+  footer{text-align:center;padding:32px 20px 44px;font-size:.85rem;color:#8a7862;border-top:3px solid var(--ink);margin-top:16px;}
+
+  @media(max-width:880px){
+    .hero{grid-template-columns:1fr;padding-top:32px;}
+    .pillars{grid-template-columns:1fr 1fr;}
+    .pattern-cards{grid-template-columns:1fr;}
+    .teacher-panel{grid-template-columns:1fr;}
+    .roleplay-panel{grid-template-columns:1fr;}
+    .research-grid{grid-template-columns:1fr;}
+    .speak-box{grid-template-columns:1fr;}
+    .dash-grid{grid-template-columns:1fr 1fr;}
+    .nav-links a{display:none;}
+    .quiz-box{flex-direction:column;}
+  }
+</style>
+</head>
+<body>
+<div class="grain"></div>
+
+<nav class="nav">
+  <div class="logo">
+    <div class="mascot sm bob" id="navMascot"><div class="eyes"><span></span><span></span></div><div class="mouth"></div></div>
+    PakDee<span style="color:var(--orange)">English</span>
+  </div>
+  <div class="nav-links">
+    <a href="#unit">บทเรียน</a>
+    <a href="#speak">พูดกับครูส้ม</a>
+    <a href="#roleplay">โรลเพลย์</a>
+    <a href="#recap">ทำอะไรไปบ้าง</a>
+    <a href="#teacher">ครูส้ม</a>
+    <div class="level-chip" id="levelChip">⭐ Lv.<span id="levelVal">1</span></div>
+    <div class="score-chip" id="scoreChip">🍊 <span id="scoreVal">0</span></div>
+    <div class="courage-chip" id="courageChip">🎤 <span id="courageVal">0</span></div>
+  </div>
+  <button class="nav-cta" onclick="document.getElementById('unit').scrollIntoView()">เริ่มเรียนเลย</button>
+</nav>
+
+<header class="hero">
+  <div>
+    <span class="eyebrow-chip">🍊 Welcome to ปากดี — ที่นี่ไม่มีตัดสิน มีแต่เชียร์</span>
+    <h1>เรียนอิงลิชแบบ<br><span class="pop">ปากดี</span> กับครูส้ม</h1>
+    <p>ไม่ต้องเป๊ะตั้งแต่วันแรกก็ได้ ที่นี่ไม่มีใครมาตัดสินว่าเก่งหรือไม่เก่ง พูดผิดก็แค่ลองใหม่ ไม่มีใครว่า มีครูส้ม (AI) คอยคุยด้วยและติชมกลับทันที ค่อยๆ ไปทีละวัน วันนี้ดีกว่าเมื่อวานนิดนึงก็พอแล้ว 🍊</p>
+    <div class="hero-ctas">
+      <button class="btn btn-primary" onclick="document.getElementById('unit').scrollIntoView()">ลองบทเรียนแรก</button>
+      <button class="btn btn-ghost" onclick="document.getElementById('roleplay').scrollIntoView()">ลองคุยกับป้าส้ม</button>
+    </div>
+  </div>
+  <div class="hero-art">
+    <div class="mascot xl bob" id="heroMascot"><div class="eyes"><span></span><span></span></div><div class="mouth"></div></div>
+  </div>
+</header>
+
+<details class="teacher-toggle">
+  <summary><span class="chevron">▾</span> สำหรับคุณครู/ผู้ปกครอง: แนวคิดและหลักงานวิจัยเบื้องหลังเว็บนี้</summary>
+  <div class="teacher-toggle-body">
+    <div class="section" style="padding:20px 0;">
+      <div class="section-head">
+        <h2>แนวคิดเบื้องหลัง</h2>
+        <p>ยึดหลัก Communicative Language Teaching (CLT) + Sentence Pattern-Based Learning ทุกกิจกรรมถูกออกแบบให้เชื่อมกับ 3 ตัวแปรที่งานวิจัยต้องการพัฒนา</p>
+      </div>
+      <div class="pillars">
+        <div class="pillar"><div class="num">1</div><h3>Learning by Doing</h3><p>คลิก ลาก เลือก พูด ประกอบประโยคเอง</p></div>
+        <div class="pillar"><div class="num">2</div><h3>Authentic Learning</h3><p>สถานการณ์จริงใกล้ตัวนักเรียน</p></div>
+        <div class="pillar"><div class="num">3</div><h3>Feedback</h3><p>ฟีดแบ็กทันทีทุกครั้ง ไม่มีคำตำหนิ</p></div>
+        <div class="pillar"><div class="num">4</div><h3>พัฒนาต่อเนื่อง</h3><p>สะสมแต้ม เก็บแพทเทิร์นไปใช้จริงเรื่อยๆ</p></div>
+      </div>
+      <div class="research-grid">
+        <div class="research-card comm"><h3>🗣️ สมรรถนะการสื่อสาร</h3><div class="goal">Communicative Competence</div>
+          <ul><li>ประกอบประโยคจากแพทเทิร์นจริง</li><li>โรลเพลย์แบบมีภารกิจให้ทำ</li><li>พูดออกเสียงจริงให้ครูส้มฟัง</li></ul></div>
+        <div class="research-card att"><h3>😄 เจตคติต่อภาษาอังกฤษ</h3><div class="goal">Attitude</div>
+          <ul><li>เนื้อหาสนุก มาสคอตน่ารัก</li><li>ระบบคอมโบ/แต้มทำให้รู้สึกเหมือนเล่นเกม</li><li>เช็คมู้ดก่อน-หลังเรียนแบบเบาๆ</li></ul></div>
+        <div class="research-card conf"><h3>💪 ความมั่นใจในการใช้ภาษา</h3><div class="goal">Confidence</div>
+          <ul><li>แต้ม "กล้าพูด" ให้ทุกการลอง ไม่ตัดสินถูกผิด</li><li>ฟีดแบ็กเชิงบวกเสมอ</li><li>ฝึกซ้ำได้ไม่จำกัด ไม่มีใครว่า</li></ul></div>
+      </div>
+    </div>
+  </div>
+</details>
+
+<section class="section" id="unit">
+  <div class="section-head">
+    <h2>เส้นทางบทเรียน 🍊</h2>
+    <p>เรียนทีละบทแบบมีด่านให้ปลดล็อก ทำคะแนนแต่ละบทให้ถึงเกณฑ์ค่อยไปด่านต่อไป — เก็บดาวให้ครบ 3 ดวงทุกยูนิต!</p>
+  </div>
+  <div class="path-wrap" id="pathWrap"></div>
+
+  <div class="section-head" style="margin-top:6px;">
+    <h2>บทเรียน 4 ยูนิต</h2>
+    <p>กดที่แต่ละยูนิตเพื่อเปิด/ปิด — มีคำศัพท์ให้จับคู่ ท่าพูดปังๆ และมินิเกมสะสมคอมโบในทุกยูนิต</p>
+  </div>
+
+  <!-- UNIT 1 -->
+  <details class="unit-wrap" open id="unitWrap1">
+    <summary class="unit-head" id="unitHead1">
+      <div class="unit-badge" id="unitBadge1"><span>UNIT</span><strong>1</strong></div>
+      <div><h2>Our Favorite Dishes</h2><div class="sub">ของกินโปรด (ที่มักจะหมดตู้เย็นตอนหิวเที่ยงคืน)</div>
+      <div class="unit-progress-chip" id="unitChip1">⭐ 0/8 · คอมโบสูงสุด 0</div></div>
+      <span class="chevron">▾</span>
+    </summary>
+    <div class="unit-body">
+      <div>
+        <div class="tag-row"><span class="tag">คำศัพท์</span><span class="hint">พลิกป้ายหาคู่ อังกฤษ↔ไทย ให้ชนกัน ยิ่งจำแม่นยิ่งได้แต้มไว!</span></div>
+        <div class="match-progress" id="matchProgress1"></div>
+        <div class="word-grid match-grid" id="wordGrid1"></div>
+        <button class="check-btn" id="matchNextBtn1" style="display:none;margin-top:14px;">สับไพ่ชุดต่อไป 🔀</button>
+      </div>
+      <div>
+        <div class="tag-row"><span class="tag gram">ท่าพูดปัง</span></div>
+        <div class="pattern-cards">
+          <div class="pattern-card"><div class="p1">There is / isn't + คำนามเอกพจน์</div><div class="p2">"There is some ham." / "There isn't any ham."</div></div>
+          <div class="pattern-card"><div class="p1">Are there any + คำนามพหูพจน์?</div><div class="p2">"Are there any french fries?"</div></div>
+          <div class="pattern-card"><div class="p1">How many + พหูพจน์ + are there?</div><div class="p2">"How many pies are there?"</div></div>
+          <div class="pattern-card"><div class="p1">There are + a lot of + พหูพจน์</div><div class="p2">"There are a lot of sausages."</div></div>
+        </div>
+      </div>
+      <div>
+        <div class="tag-row"><span class="tag play">ลองประกอบประโยค</span></div>
+        <div class="builder">
+          <div class="builder-row">
+            <span>There</span>
+            <select id="verbSel"><option value="is">is</option><option value="isn't">isn't</option><option value="are">are</option><option value="aren't">aren't</option></select>
+            <select id="qtySel"><option value="some">some</option><option value="any">any</option><option value="a lot of">a lot of</option><option value="">(ไม่ใส่)</option></select>
+            <select id="nounSel"><option value="ham">ham</option><option value="french fries">french fries</option><option value="pies">pies</option><option value="honey">honey</option><option value="sausages">sausages</option></select>
+            <span>in the fridge.</span>
+          </div>
+          <div class="builder-output" id="output">There is some ham in the fridge.</div>
+          <button class="check-btn" onclick="checkSentence()">เช็กประโยคนี้</button>
+          <div class="feedback" id="fb"></div>
+          <div><button class="ask-teacher-inline" onclick="askAboutUnit()">🙋‍♀️ งงตรงนี้ ถามครูส้มเลย</button></div>
+        </div>
+      </div>
+      <div>
+        <div class="tag-row"><span class="tag" style="background:var(--pink);color:#fff">มินิเกมสะสมคอมโบ</span></div>
+        <div class="quiz-box">
+          <div class="mascot lg" id="quizMascot1"><div class="eyes"><span></span><span></span></div><div class="mouth"></div></div>
+          <div class="quiz-main">
+            <div class="quiz-sentence" id="quizSentence1"></div>
+            <div class="quiz-options" id="quizOptions1"></div>
+            <div class="quiz-reaction" id="quizReaction1"></div>
+            <div class="quiz-progress" id="quizProgress1"></div>
+            <button class="quiz-next" id="quizNext1">ข้อต่อไป →</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </details>
+
+  <!-- UNIT 2 -->
+  <details class="unit-wrap locked" id="unitWrap2">
+    <summary class="unit-head" id="unitHead2">
+      <div class="unit-badge" id="unitBadge2"><span>UNIT</span><strong>🔒</strong></div>
+      <div><h2>Who's Better?</h2><div class="sub">การเปรียบเทียบ (comparative & superlative adjectives)</div>
+      <div class="unit-progress-chip" id="unitChip2">🔒 ทำยูนิต 1 ให้ถึง 5 ข้อถูกก่อนน้า</div></div>
+      <span class="chevron">▾</span>
+    </summary>
+    <div class="unit-body">
+      <div>
+        <div class="tag-row"><span class="tag">คำศัพท์</span><span class="hint">คลิกคำเพื่อพลิกดูรูปเปรียบเทียบ</span></div>
+        <div class="word-grid" id="wordGrid2"></div>
+      </div>
+      <div>
+        <div class="tag-row"><span class="tag gram">ท่าพูดปัง</span></div>
+        <div class="pattern-cards">
+          <div class="pattern-card"><div class="p1">A + is + comparative + than + B</div><div class="p2">"I am taller than Carol."</div></div>
+          <div class="pattern-card"><div class="p1">A + is + the + superlative + (ที่)</div><div class="p2">"The chocolate cake is the most delicious cake in the store."</div></div>
+          <div class="pattern-card"><div class="p1">Who/Which + is + comparative + than + A or B?</div><div class="p2">"Which is faster, a train or a car?"</div></div>
+          <div class="pattern-card"><div class="p1">Who/Which + is + the + superlative + ...?</div><div class="p2">"Which is the cheapest item in the store?"</div></div>
+        </div>
+      </div>
+      <div>
+        <div class="tag-row"><span class="tag" style="background:var(--pink);color:#fff">มินิเกมสะสมคอมโบ</span></div>
+        <div class="quiz-box">
+          <div class="mascot lg" id="quizMascot2"><div class="eyes"><span></span><span></span></div><div class="mouth"></div></div>
+          <div class="quiz-main">
+            <div class="quiz-sentence" id="quizSentence2"></div>
+            <div class="quiz-options" id="quizOptions2"></div>
+            <div class="quiz-reaction" id="quizReaction2"></div>
+            <div class="quiz-progress" id="quizProgress2"></div>
+            <button class="quiz-next" id="quizNext2">ข้อต่อไป →</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </details>
+
+  <!-- UNIT 3 -->
+  <details class="unit-wrap locked" id="unitWrap3">
+    <summary class="unit-head" id="unitHead3">
+      <div class="unit-badge" id="unitBadge3"><span>UNIT</span><strong>🔒</strong></div>
+      <div><h2>Safety First</h2><div class="sub">กฎความปลอดภัย (must / mustn't / should / shouldn't)</div>
+      <div class="unit-progress-chip" id="unitChip3">🔒 ทำยูนิต 2 ให้ถึง 5 ข้อถูกก่อนน้า</div></div>
+      <span class="chevron">▾</span>
+    </summary>
+    <div class="unit-body">
+      <div>
+        <div class="tag-row"><span class="tag">คำศัพท์</span><span class="hint">คลิกคำเพื่อพลิกดูคำแปล</span></div>
+        <div class="word-grid" id="wordGrid3"></div>
+      </div>
+      <div>
+        <div class="tag-row"><span class="tag gram">ท่าพูดปัง</span></div>
+        <div class="pattern-cards">
+          <div class="pattern-card"><div class="p1">Do / Don't + กริยา (คำสั่ง)</div><div class="p2">"Do your homework." / "Don't walk on the grass."</div></div>
+          <div class="pattern-card"><div class="p1">must / mustn't (บังคับ/ห้าม)</div><div class="p2">"You must use a crosswalk." / "You mustn't tease animals."</div></div>
+          <div class="pattern-card"><div class="p1">should / shouldn't (ควร/ไม่ควร)</div><div class="p2">"She should help people in need." / "You shouldn't play near the pond."</div></div>
+          <div class="pattern-card"><div class="p1">Subject + must/should + verb</div><div class="p2">ใช้กับทุกประธานรูปเดียวกัน ไม่ผัน</div></div>
+        </div>
+      </div>
+      <div>
+        <div class="tag-row"><span class="tag" style="background:var(--pink);color:#fff">มินิเกมสะสมคอมโบ</span></div>
+        <div class="quiz-box">
+          <div class="mascot lg" id="quizMascot3"><div class="eyes"><span></span><span></span></div><div class="mouth"></div></div>
+          <div class="quiz-main">
+            <div class="quiz-sentence" id="quizSentence3"></div>
+            <div class="quiz-options" id="quizOptions3"></div>
+            <div class="quiz-reaction" id="quizReaction3"></div>
+            <div class="quiz-progress" id="quizProgress3"></div>
+            <button class="quiz-next" id="quizNext3">ข้อต่อไป →</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </details>
+
+  <!-- UNIT 4 -->
+  <details class="unit-wrap locked" id="unitWrap4">
+    <summary class="unit-head" id="unitHead4">
+      <div class="unit-badge" id="unitBadge4"><span>UNIT</span><strong>🔒</strong></div>
+      <div><h2>Having Fun with Activities</h2><div class="sub">ความถี่ในการทำกิจกรรม (adverbs of frequency)</div>
+      <div class="unit-progress-chip" id="unitChip4">🔒 ทำยูนิต 3 ให้ถึง 5 ข้อถูกก่อนน้า</div></div>
+      <span class="chevron">▾</span>
+    </summary>
+    <div class="unit-body">
+      <div>
+        <div class="tag-row"><span class="tag">คำศัพท์</span><span class="hint">คลิกคำเพื่อพลิกดูคำแปล</span></div>
+        <div class="word-grid" id="wordGrid4"></div>
+      </div>
+      <div>
+        <div class="tag-row"><span class="tag gram">ท่าพูดปัง</span></div>
+        <div class="pattern-cards">
+          <div class="pattern-card"><div class="p1">Subject + adverb + verb</div><div class="p2">"I sometimes play computer games."</div></div>
+          <div class="pattern-card"><div class="p1">Subject + verb + จำนวนครั้ง</div><div class="p2">"He rides a bike three times a week."</div></div>
+          <div class="pattern-card"><div class="p1">Do/Does + subject + verb...?</div><div class="p2">"Do you always read newspapers?" — Yes, I do. / No, I don't.</div></div>
+          <div class="pattern-card"><div class="p1">How often + do/does + subject + verb?</div><div class="p2">"How often do you go swimming?" — "I go swimming three times a month."</div></div>
+        </div>
+      </div>
+      <div>
+        <div class="tag-row"><span class="tag" style="background:var(--pink);color:#fff">มินิเกมสะสมคอมโบ</span></div>
+        <div class="quiz-box">
+          <div class="mascot lg" id="quizMascot4"><div class="eyes"><span></span><span></span></div><div class="mouth"></div></div>
+          <div class="quiz-main">
+            <div class="quiz-sentence" id="quizSentence4"></div>
+            <div class="quiz-options" id="quizOptions4"></div>
+            <div class="quiz-reaction" id="quizReaction4"></div>
+            <div class="quiz-progress" id="quizProgress4"></div>
+            <button class="quiz-next" id="quizNext4">ข้อต่อไป →</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </details>
+</section>
+
+<section class="section" id="speak">
+  <div class="section-head">
+    <h2>พูดให้ครูส้มฟัง 🎤</h2>
+    <p>กดไมค์แล้วพูดประโยคภาษาอังกฤษตามที่กำหนด ครูส้มจะฟังแล้วติชมกลับทันทีแบบจัดเต็ม เป๊ะไม่เป๊ะบอกหมด ไม่มีพูดผิดแล้วโดนว่า มีแต่เชียร์!</p>
+  </div>
+  <div class="speak-box">
+    <div class="mascot lg" id="speakMascot"><div class="eyes"><span></span><span></span></div><div class="mouth"></div></div>
+    <div style="width:100%">
+      <div class="speak-target" id="speakTarget"></div>
+      <div class="mic-row">
+        <button class="mic-btn" id="micBtn" onclick="toggleListening()">🎤</button>
+        <span class="mic-hint" id="micHint">กดไมค์แล้วพูดประโยคด้านบนให้ครูส้มฟัง</span>
+      </div>
+      <div class="transcript-box" id="transcriptBox">ครูส้มได้ยินว่า: <i>(ยังไม่พูด)</i></div>
+      <div class="hype-feedback" id="hypeFb"></div>
+      <button class="speak-next" id="speakNext" onclick="nextSpeak()" style="display:none;">ประโยคต่อไป →</button>
+      <div class="type-fallback">
+        <input id="typeFallback" type="text" placeholder="ไมค์ใช้ไม่ได้เหรอ? พิมพ์ประโยคแทนได้ตรงนี้">
+        <button onclick="submitTyped()">ส่ง</button>
+      </div>
+      <div class="no-support-note" id="noSupportNote"></div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="roleplay">
+  <div class="section-head">
+    <h2>ฝึกสนทนาโรลเพลย์ — ของจริง ไม่ใช่แบบฝึกหัด</h2>
+    <p>เป้าหมายไม่ใช่ตอบให้ถูกไวยากรณ์ 100% แต่คือ "กล้าพิมพ์คุยต่อเนื่อง" — ทำภารกิจด้านล่างให้ครบระหว่างคุยกับป้าส้ม</p>
+  </div>
+  <div class="roleplay-panel">
+    <div class="roleplay-left">
+      <span class="scenario-chip">📍 สถานการณ์: ร้านของกินป้าส้ม</span>
+      <h2>คุยกับป้าส้ม</h2>
+      <p>สวมบทเป็นลูกค้า ลองทำภารกิจให้ครบ ป้าส้มจะคุยต่อเนื่องเหมือนสถานการณ์จริง ไม่ตัดจบเป็นข้อๆ</p>
+      <ul class="mission-list" id="missionList">
+        <li data-m="any"><span class="mission-box">☐</span> ถามว่ามีของกินอะไรมั่งด้วย "any" (เช่น Are there any pies?)</li>
+        <li data-m="howmany"><span class="mission-box">☐</span> ถามจำนวนด้วย "How many...?"</li>
+        <li data-m="isnt"><span class="mission-box">☐</span> บอกว่าไม่มีของบางอย่างด้วย "isn't/aren't"</li>
+      </ul>
+      <div class="quick-asks" style="margin-top:6px;">
+        <div class="quick-ask" onclick="fillRp('Are there any pies?')">Are there any pies?</div>
+        <div class="quick-ask" onclick="fillRp('How many sausages are there?')">How many sausages?</div>
+        <div class="quick-ask" onclick="fillRp(&quot;There isn't any honey at my house.&quot;)">isn't any honey</div>
+      </div>
+    </div>
+    <div class="roleplay-right">
+      <div class="mission-complete-banner" id="missionBanner">🎉 ทำครบทุกภารกิจแล้ว! ได้โบนัสแต้มกล้าพูดพิเศษ 🎉</div>
+      <div id="rplog">
+        <div class="msg teacher">สวัสดีจ้ะ ป้าส้มเองงง 🍊 วันนี้ที่ร้านมี bacon, ham, honey, pies เยอะเลย อยากถามป้าไรมั้ยจ๊ะ ลองถามดูสิ~</div>
+      </div>
+      <div class="chat-input-row">
+        <input id="rpInput" type="text" placeholder="ลองพิมพ์ถามป้าส้มเลย เช่น Are there any pies?">
+        <button onclick="sendRoleplay()">ส่ง</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="recap">
+  <div class="section-head">
+    <h2>เมื่อกี้คุณเพิ่งทำอะไรไปบ้าง?</h2>
+    <p>สรุปสิ่งที่คุณลองทำในเว็บนี้ พร้อมอธิบายว่าทำไมมันถึงช่วยให้เก่งภาษาอังกฤษขึ้นจริงๆ (ไม่ใช่แค่ท่องจำ)</p>
+  </div>
+  <div class="recap-box" id="recapBox">
+    <div class="recap-empty" id="recapEmpty">ยังไม่ได้ลองอะไรเลยตอนนี้ ลองเลื่อนขึ้นไปเล่นกิจกรรมด้านบนก่อนนะ แล้วกลับมาดูตรงนี้อีกที!</div>
+    <div id="recapItems" style="display:none;"></div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="section-head"><h2>วงจรการเรียนในทุกยูนิต</h2><p>สลับกันไปเรื่อยๆ จนกว่าท่าพูดจะติดปาก</p></div>
+  <div class="loop">
+    <div class="loop-step"><span class="icon">👀</span><h3>ดูสถานการณ์จริง</h3><p>คำศัพท์และท่าพูดจากเรื่องใกล้ตัว</p></div>
+    <div class="loop-arrow">→</div>
+    <div class="loop-step"><span class="icon">🧩</span><h3>ลองเล่น/ลองพูด</h3><p>คลิก ลาก พิมพ์ พูด สร้างประโยคของตัวเอง</p></div>
+    <div class="loop-arrow">→</div>
+    <div class="loop-step"><span class="icon">💬</span><h3>รับฟีดแบ็กทันที</h3><p>ผิดก็รู้ทันที พร้อมตัวอย่างที่ถูกให้ดู</p></div>
+    <div class="loop-arrow">→</div>
+    <div class="loop-step"><span class="icon">🍊</span><h3>คุยกับครูส้ม</h3><p>ไม่เข้าใจตรงไหน ถามได้ตลอด ไม่มีหมดคาบ</p></div>
+  </div>
+</section>
+
+<section class="section" id="survey">
+  <div class="section-head">
+    <h2>รู้สึกยังไงบ้างวันนี้?</h2>
+    <p>ตอบสั้นๆ ก่อนเริ่มเรียน แล้วกลับมาตอบอีกครั้งหลังลองกิจกรรมด้านบน จะได้เห็นว่าความมั่นใจเปลี่ยนไปแค่ไหน</p>
+  </div>
+  <div class="survey-box">
+    <div id="surveyItems"></div>
+    <div class="survey-item survey-feedback">
+      <div class="survey-q">อยากบอกอะไรครูส้มเพิ่มมั้ย? (พิมพ์ได้เลย ไม่บังคับ)</div>
+      <textarea id="surveyText" placeholder="เช่น ชอบตรงไหน อยากให้เพิ่มอะไร..."></textarea>
+    </div>
+    <div class="survey-actions">
+      <button class="survey-btn pre" onclick="saveSurvey('pre')">📝 บันทึกก่อนเรียน</button>
+      <button class="survey-btn post" onclick="saveSurvey('post')">📝 บันทึกหลังเรียน</button>
+    </div>
+    <div class="survey-result" id="surveyResult">
+      <h3 style="margin-bottom:14px;">ผลเปรียบเทียบ (คะแนนเฉลี่ยเต็ม 5)</h3>
+      <div class="bar-row"><div class="bar-label">ก่อนเรียน</div><div class="bar-track"><div class="bar-fill pre" id="barPre"></div></div></div>
+      <div class="bar-row"><div class="bar-label">หลังเรียน</div><div class="bar-track"><div class="bar-fill post" id="barPost"></div></div></div>
+      <div class="survey-note" id="surveyNote"></div>
+    </div>
+  </div>
+</section>
+
+<details class="teacher-toggle" id="dashDetails">
+  <summary><span class="chevron">▾</span> 🔒 สำหรับคุณครู: ภาพรวมของนักเรียนคนนี้ (หลังบ้าน)</summary>
+  <div class="teacher-toggle-body">
+    <div class="section" style="padding:20px 0;">
+      <div class="dash-grid">
+        <div class="dash-stat"><div class="n" id="dashScore">0</div><div class="l">แต้มปากดี (ความถูกต้อง)</div></div>
+        <div class="dash-stat"><div class="n" id="dashCourage">0</div><div class="l">แต้มกล้าพูด (ความพยายาม)</div></div>
+        <div class="dash-stat"><div class="n" id="dashWords">0</div><div class="l">คำศัพท์ที่เปิดดูแล้ว</div></div>
+        <div class="dash-stat"><div class="n" id="dashRp">0</div><div class="l">ประโยคที่คุยกับป้าส้ม</div></div>
+      </div>
+      <table class="dash-table">
+        <tr><th>ยูนิต</th><th>ตอบถูก</th><th>ตอบผิด</th><th>คอมโบสูงสุด</th></tr>
+        <tr><td>1. Our Favorite Dishes</td><td id="u1c">0</td><td id="u1w">0</td><td id="u1b">0</td></tr>
+        <tr><td>2. Who's Better?</td><td id="u2c">0</td><td id="u2w">0</td><td id="u2b">0</td></tr>
+        <tr><td>3. Safety First</td><td id="u3c">0</td><td id="u3w">0</td><td id="u3b">0</td></tr>
+        <tr><td>4. Having Fun with Activities</td><td id="u4c">0</td><td id="u4w">0</td><td id="u4b">0</td></tr>
+      </table>
+      <div class="dash-note" id="dashSurveyNote">ยังไม่มีข้อมูลแบบประเมินก่อน/หลังเรียน</div>
+      <div class="dash-feedback-list" id="dashFeedbackList"></div>
+      <div class="dash-note" style="margin-top:16px;">* ข้อมูลนี้เป็นข้อมูลของเครื่องนี้ตอนนี้เท่านั้น (จำลองไว้สำหรับสาธิต) ระบบจริงจะเชื่อมฐานข้อมูลกลางให้ครูดูของนักเรียนทุกคนพร้อมกันได้</div>
+    </div>
+  </div>
+</details>
+
+<section class="section" id="teacher">
+  <div class="section-head"><h2>เรียนควบคู่ครูส้ม ตลอดเวลา</h2>
+    <p>ไม่ใช่แค่แอปทำแบบฝึกหัด — มีครูส้ม (AI) คอยอธิบาย แซว และแก้ไขให้เหมือนนั่งเรียนคู่กันจริงๆ</p></div>
+  <div class="teacher-panel">
+    <div class="teacher-left">
+      <div class="mascot lg bob" id="teacherPanelMascot"><div class="eyes"><span></span><span></span></div><div class="mouth"></div></div>
+      <h2>ครูส้ม</h2>
+      <p>ถามอะไรก็ได้เกี่ยวกับทุกยูนิต ไม่เก็ตตรงไหน พิมพ์มาเลย ครูส้มจะอธิบายง่ายๆ พร้อมมุกส้มๆ ให้จำได้</p>
+      <p style="font-size:.8rem;opacity:.7">* ในตัวอย่างนี้ครูส้มขับเคลื่อนด้วย Claude ผ่าน Anthropic API</p>
+    </div>
+    <div class="teacher-right">
+      <div class="quick-asks">
+        <div class="quick-ask" onclick="quickAsk('isn\'t กับ aren\'t ต่างกันยังไง')">isn't vs aren't?</div>
+        <div class="quick-ask" onclick="quickAsk('must กับ should ต่างกันยังไง')">must vs should?</div>
+        <div class="quick-ask" onclick="quickAsk('comparative กับ superlative ต่างกันยังไง')">comparative vs superlative?</div>
+      </div>
+      <div id="chatlog">
+        <div class="msg teacher">หวัดดีค้าบ ครูส้มเองงง 🍊 มีตรงไหนงงมั้ย หรือจะลองแต่งประโยคมาให้ครูเช็กก็ได้นะ</div>
+      </div>
+      <div class="chat-input-row">
+        <input id="chatInput" type="text" placeholder="พิมพ์คำถามถึงครูส้ม...">
+        <button onclick="sendChat()">ส่ง</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>PakDee English — ต้นแบบเว็บแอปเรียนภาษาอังกฤษเชิงสื่อสาร (CLT + Sentence Pattern-Based Learning) นำโดยครูส้ม 🍊 · ทำเป็นตัวอย่างเพื่อสาธิตแนวคิด</footer>
+
+<div class="toast" id="toast"></div>
+
+<button class="fab" onclick="document.getElementById('teacher').scrollIntoView({behavior:'smooth'})">
+  <div class="mascot sm" id="fabMascot"><div class="eyes"><span></span><span></span></div><div class="mouth"></div></div>
+  ถามครูส้ม
+</button>
+
+<script>
+/* ---------- score & courage ---------- */
+let score = 0, courage = 0, level = 1;
+function showToast(msg){
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(showToast._tm);
+  showToast._tm = setTimeout(()=>t.classList.remove('show'), 2600);
+}
+function addScore(n){
+  score += n;
+  document.getElementById('scoreVal').textContent = score;
+  document.getElementById('dashScore').textContent = score;
+  const chip = document.getElementById('scoreChip');
+  chip.classList.add('bump'); setTimeout(()=>chip.classList.remove('bump'), 220);
+  const newLevel = Math.floor(score/50) + 1;
+  if(newLevel > level){
+    level = newLevel;
+    document.getElementById('levelVal').textContent = level;
+    const lc = document.getElementById('levelChip');
+    lc.classList.add('bump'); setTimeout(()=>lc.classList.remove('bump'), 220);
+    showToast('🆙 เลเวลอัพ! ตอนนี้อยู่ Lv.' + level + ' แล้ว ปังมาก!');
+  }
+}
+function addCourage(n){
+  courage += n;
+  document.getElementById('courageVal').textContent = courage;
+  document.getElementById('dashCourage').textContent = courage;
+  const chip = document.getElementById('courageChip');
+  chip.classList.add('bump'); setTimeout(()=>chip.classList.remove('bump'), 220);
+}
+
+/* ---------- mascot mood ---------- */
+const mascotIds = ['navMascot','heroMascot','teacherPanelMascot','fabMascot','speakMascot',
+  'quizMascot1','quizMascot2','quizMascot3','quizMascot4'];
+function setMood(mood, ids){
+  (ids || mascotIds).forEach(id=>{
+    const el = document.getElementById(id);
+    if(!el) return;
+    el.classList.remove('happy','sad','think','shy','cry');
+    if(mood) el.classList.add(mood);
+  });
+}
+
+/* ---------- recap tracking ---------- */
+const recap = { wordsFlipped:0, sentencesBuilt:0, quizAttempts:0, speakAttempts:0, roleplayTurns:0 };
+function renderRecap(){
+  const total = recap.wordsFlipped + recap.sentencesBuilt + recap.quizAttempts + recap.speakAttempts + recap.roleplayTurns;
+  document.getElementById('recapEmpty').style.display = total === 0 ? 'block' : 'none';
+  const wrap = document.getElementById('recapItems');
+  wrap.style.display = total === 0 ? 'none' : 'grid';
+  const items = [];
+  if(recap.wordsFlipped>0) items.push(['📖','เปิดคำศัพท์ไปแล้ว '+recap.wordsFlipped+' คำ','นี่คือการฝึกจำคำศัพท์ผ่านการเล่น สมองจำได้ดีกว่าการท่องเฉยๆ']);
+  if(recap.sentencesBuilt>0) items.push(['🧩','ประกอบประโยคเองไปแล้ว '+recap.sentencesBuilt+' ประโยค','คุณกำลังฝึกใช้ท่าพูดจริง ไม่ใช่แค่จำกฎไวยากรณ์']);
+  if(recap.quizAttempts>0) items.push(['🎯','ตอบมินิเกมไปแล้ว '+recap.quizAttempts+' ข้อ','ทุกครั้งที่ตอบ สมองได้ฝึกตัดสินใจเลือกท่าพูดที่ถูกต้องแบบเร็วๆ']);
+  if(recap.speakAttempts>0) items.push(['🎤','พูดออกเสียงไปแล้ว '+recap.speakAttempts+' ครั้ง','นี่คือการฝึกความมั่นใจในการออกเสียงจริง ซึ่งฝึกจากการอ่านอย่างเดียวไม่ได้']);
+  if(recap.roleplayTurns>0) items.push(['💬','คุยกับป้าส้มไปแล้ว '+recap.roleplayTurns+' ประโยค','นี่คือการฝึกสื่อสารในสถานการณ์ต่อเนื่อง ซึ่งสำคัญที่สุดสำหรับการสื่อสารจริง']);
+  wrap.innerHTML = items.map(([icon,title,desc])=>`<div class="recap-item"><div class="recap-icon">${icon}</div><div><b>${title}</b><p>${desc}</p></div></div>`).join('');
+}
+renderRecap();
+
+/* ---------- vocab flip cards (generalized) ---------- */
+const flippedTracker = new Set();
+function renderVocab(containerId, list, keyPrefix){
+  const grid = document.getElementById(containerId);
+  list.forEach(([en, th], i)=>{
+    const chip = document.createElement('div');
+    chip.className = 'word-chip';
+    chip.innerHTML = `<div class="word-inner"><div class="word-face front">${en}</div><div class="word-face back">${th}</div></div>`;
+    const key = keyPrefix + i;
+    chip.addEventListener('click', ()=>{
+      chip.classList.toggle('flipped');
+      if(!flippedTracker.has(key)){
+        flippedTracker.add(key);
+        recap.wordsFlipped++; document.getElementById('dashWords').textContent = recap.wordsFlipped;
+        addScore(1); setMood('happy'); setTimeout(()=>setMood(null),700); renderRecap();
+      }
+    });
+    grid.appendChild(chip);
+  });
+}
+/* ---------- vocab matching game (Unit 1 — flip cards to find en↔th pairs) ---------- */
+function initMatchGame(containerId, progressId, nextBtnId, fullList, keyPrefix){
+  let batchStart = 0;
+  const batchSize = 8;
+  let tries = 0, matchedCount = 0, totalPairs = 0, lock = false, firstCard = null;
+  const grid = document.getElementById(containerId);
+  const progressEl = document.getElementById(progressId);
+  const nextBtn = document.getElementById(nextBtnId);
+
+  function loadRound(){
+    const batch = fullList.slice(batchStart, batchStart + batchSize);
+    totalPairs = batch.length; matchedCount = 0; tries = 0; lock = false; firstCard = null;
+    nextBtn.style.display = 'none';
+    let cards = [];
+    batch.forEach(([en, th], i)=>{ cards.push({pid:i, type:'en', text:en}); cards.push({pid:i, type:'th', text:th}); });
+    cards = shuffleArr(cards);
+    grid.innerHTML = '';
+    cards.forEach(c=>{
+      const chip = document.createElement('div');
+      chip.className = 'word-chip';
+      chip.innerHTML = `<div class="word-inner"><div class="word-face front card-back">🍊</div><div class="word-face back">${c.text}</div></div>`;
+      chip.dataset.pid = c.pid; chip.dataset.type = c.type;
+      chip.addEventListener('click', ()=>onCardClick(chip));
+      grid.appendChild(chip);
+    });
+    updateProgress();
+  }
+  function updateProgress(){
+    progressEl.textContent = `จับคู่ได้ ${matchedCount}/${totalPairs} คู่ • ลองไปแล้ว ${tries} ครั้ง`;
+  }
+  function onCardClick(chip){
+    if(lock || chip.classList.contains('flipped') || chip.classList.contains('matched')) return;
+    chip.classList.add('flipped');
+    if(!firstCard){ firstCard = chip; return; }
+    lock = true; tries++;
+    addCourage(1);
+    const isMatch = firstCard.dataset.pid === chip.dataset.pid && firstCard.dataset.type !== chip.dataset.type;
+    if(isMatch){
+      firstCard.classList.add('matched'); chip.classList.add('matched');
+      matchedCount++;
+      const key = keyPrefix + batchStart + '-' + firstCard.dataset.pid;
+      if(!flippedTracker.has(key)){
+        flippedTracker.add(key); recap.wordsFlipped++;
+        document.getElementById('dashWords').textContent = recap.wordsFlipped;
+      }
+      renderRecap(); addScore(3); setMood('shy'); setTimeout(()=>setMood(null),600);
+      const fc = firstCard; firstCard = null; lock = false;
+      updateProgress();
+      if(matchedCount === totalPairs){
+        addScore(10);
+        const hasMore = batchStart + batchSize < fullList.length;
+        showToast(hasMore ? '🎉 ครบชุดนี้แล้ว! ไปชุดต่อไปกันต่อ' : '🎉 จับคู่ครบทุกคำในยูนิตนี้แล้ว เก่งมาก!');
+        if(hasMore) nextBtn.style.display = 'inline-block';
+        else progressEl.textContent += ' • ครบทุกคำแล้ว 🍊';
+      }
+    } else {
+      setMood('cry');
+      setTimeout(()=>{
+        firstCard.classList.remove('flipped'); chip.classList.remove('flipped');
+        firstCard = null; lock = false; setMood(null); updateProgress();
+      }, 700);
+    }
+  }
+  nextBtn.addEventListener('click', ()=>{ batchStart = (batchStart + batchSize) % fullList.length; loadRound(); });
+  loadRound();
+}
+initMatchGame('wordGrid1', 'matchProgress1', 'matchNextBtn1', [
+  ["bacon","เบคอน"],["butter","เนย"],["cantaloupe","แคนตาลูป"],["chicken","เนื้อไก่"],["chili","พริก"],
+  ["cookie","คุกกี้"],["dried shrimp","กุ้งแห้ง"],["french fries","เฟรนช์ฟราย"],["ham","แฮม"],["honey","น้ำผึ้ง"],
+  ["juice","น้ำผลไม้"],["lemonade","น้ำมะนาว"],["pancake","แพนเค้ก"],["papaya","มะละกอ"],["pie","พาย"],
+  ["pork","เนื้อหมู"],["sausage","ไส้กรอก"],["tomato","มะเขือเทศ"],["yogurt","โยเกิร์ต"]
+], 'u1w');
+renderVocab('wordGrid2', [
+  ["tall → taller → the tallest","สูง"],["old → older → the oldest","แก่/อายุมาก"],
+  ["fast → faster → the fastest","เร็ว"],["cheap → cheaper → the cheapest","ถูก"],
+  ["delicious → more delicious → the most delicious","อร่อย"],["beautiful → more beautiful → the most beautiful","สวย"]
+], 'u2w');
+renderVocab('wordGrid3', [
+  ["accident","อุบัติเหตุ"],["helmet","หมวกกันน็อก"],["seatbelt","เข็มขัดนิรภัย"],["crosswalk","ทางม้าลาย"],
+  ["stranger","คนแปลกหน้า"],["motorcycle","มอเตอร์ไซค์"],["electrical device","เครื่องใช้ไฟฟ้า"],["plug socket","ปลั๊กไฟ"],
+  ["garbage","ขยะ"],["public property","สมบัติสาธารณะ"],["fasten","รัด/คาด"],["protect","ปกป้อง"],
+  ["tease","แกล้ง"],["get a shock","ไฟดูด"],["get burned","โดนไฟไหม้/ลวก"],["cross the road","ข้ามถนน"]
+], 'u3w');
+renderVocab('wordGrid4', [
+  ["clean up the room","ทำความสะอาดห้อง"],["practice the piano","ฝึกเปียโน"],["have an English class","เรียนภาษาอังกฤษ"],
+  ["read a newspaper","อ่านหนังสือพิมพ์"],["play a computer game","เล่นเกมคอม"],["ride a bike","ขี่จักรยาน"],
+  ["dangerous","อันตราย"],["exciting","น่าตื่นเต้น"],["fierce","ดุ/รุนแรง"],
+  ["always","เสมอ"],["usually","ปกติ"],["often","บ่อยๆ"],["sometimes","บางครั้ง"],["never","ไม่เคย"]
+], 'u4w');
+
+/* ---------- sentence builder (unit 1) ---------- */
+function updateOutput(){
+  const v = document.getElementById('verbSel').value;
+  const q = document.getElementById('qtySel').value;
+  const n = document.getElementById('nounSel').value;
+  const parts = ['There', v, q, n, 'in the fridge.'].filter(x => x !== '');
+  document.getElementById('output').textContent = parts.join(' ').replace(/\s+/g,' ');
+}
+['verbSel','qtySel','nounSel'].forEach(id=>{ document.getElementById(id).addEventListener('change', updateOutput); });
+function checkSentence(){
+  const v = document.getElementById('verbSel').value;
+  const n = document.getElementById('nounSel').value;
+  const pluralNouns = ['french fries','pies','sausages'];
+  const isPlural = pluralNouns.includes(n);
+  const verbIsPlural = (v === 'are' || v === "aren't");
+  const fb = document.getElementById('fb');
+  fb.className = 'feedback';
+  addCourage(2);
+  recap.sentencesBuilt++; renderRecap();
+  if(isPlural === verbIsPlural){
+    fb.classList.add('ok');
+    fb.textContent = '✅ เป๊ะ! เข้ากันดี — จำท่านี้ไว้ใช้ตอนของกินหมดตู้เย็นจริงๆ ได้เลย';
+    addScore(5); setMood('shy'); setTimeout(()=>setMood(null), 900);
+  } else {
+    fb.classList.add('no');
+    fb.textContent = isPlural
+      ? '🤔 ' + n + ' เป็นพหูพจน์ ต้องใช้ "are/aren\'t" นะ ลองสลับดูอีกที'
+      : '🤔 ' + n + ' เป็นเอกพจน์/นับไม่ได้ ต้องใช้ "is/isn\'t" นะ ลองสลับดูอีกที';
+    setMood('cry'); document.getElementById('output').classList.add('shake');
+    setTimeout(()=>{ setMood(null); document.getElementById('output').classList.remove('shake'); }, 700);
+  }
+}
+updateOutput();
+function askAboutUnit(){
+  document.getElementById('teacher').scrollIntoView({behavior:'smooth'});
+  document.getElementById('chatInput').value = "งงตรง there is/are กับ isn't/aren't ของ Unit 1 อธิบายง่ายๆ พร้อมยกตัวอย่างตลกๆ หน่อย";
+  document.getElementById('chatInput').focus();
+}
+
+/* ---------- combo quiz factory (used for all 4 units) ---------- */
+const zigmaPhrases = {
+  ok: ["ซิกม่ามาก 🗿🔥", "ริซซ์ล้นจอ!!", "แกปังมาก เก่งขนาดนี้ได้ไง", "อ่านสิบเต็มสิบ!!", "เทพ! คอมโบขึ้นละ"],
+  no: ["โอ๊ะ mid ไปนิด ลองใหม่!", "ยังไม่ปัง แต่โอเคละ ลองอีกที", "คอมโบหลุด แต่ไม่เป็นไรจ้า", "เกือบละ! รอบหน้าเอาใหม่"]
+};
+function randomOf(arr){ return arr[Math.floor(Math.random()*arr.length)]; }
+function shuffleArr(arr){ return arr.slice().sort(()=>Math.random()-0.5); }
+
+const unitStats = {1:{correct:0,wrong:0,best:0},2:{correct:0,wrong:0,best:0},3:{correct:0,wrong:0,best:0},4:{correct:0,wrong:0,best:0}};
+function updateDashTable(u){
+  document.getElementById('u'+u+'c').textContent = unitStats[u].correct;
+  document.getElementById('u'+u+'w').textContent = unitStats[u].wrong;
+  document.getElementById('u'+u+'b').textContent = unitStats[u].best;
+}
+
+function makeQuiz(unitNum, qs, mascotId){
+  let idx = 0, combo = 0;
+  let order = shuffleArr(qs.map((_,i)=>i));
+  const sentenceEl = document.getElementById('quizSentence'+unitNum);
+  const optionsEl = document.getElementById('quizOptions'+unitNum);
+  const progressEl = document.getElementById('quizProgress'+unitNum);
+  const reactionEl = document.getElementById('quizReaction'+unitNum);
+  const nextBtn = document.getElementById('quizNext'+unitNum);
+  function render(){
+    const q = qs[order[idx]];
+    sentenceEl.textContent = q.s;
+    optionsEl.innerHTML = '';
+    reactionEl.textContent = '';
+    nextBtn.style.display = 'none';
+    progressEl.textContent = `ข้อ ${idx+1} / ${qs.length}  •  คอมโบ: ${combo} 🔥`;
+    setMood(null, [mascotId]);
+    q.opts.forEach(opt=>{
+      const btn = document.createElement('button');
+      btn.className = 'quiz-opt';
+      btn.textContent = opt;
+      btn.onclick = ()=> answer(opt, q.a, btn);
+      optionsEl.appendChild(btn);
+    });
+  }
+  function answer(picked, correct, btn){
+    [...optionsEl.children].forEach(b=>b.disabled=true);
+    addCourage(2);
+    recap.quizAttempts++; renderRecap();
+    if(picked === correct){
+      combo++; unitStats[unitNum].best = Math.max(unitStats[unitNum].best, combo); unitStats[unitNum].correct++;
+      btn.style.background = 'var(--mint)';
+      setMood('shy', [mascotId]);
+      addScore(5 + Math.min(combo,5));
+      reactionEl.textContent = '🎉 ' + randomOf(zigmaPhrases.ok);
+    } else {
+      combo = 0; unitStats[unitNum].wrong++;
+      btn.style.background = '#FFD1C7';
+      setMood('cry', [mascotId]);
+      [...optionsEl.children].forEach(b=>{ if(b.textContent===correct) b.style.background='var(--mint)'; });
+      reactionEl.textContent = '💛 ' + randomOf(zigmaPhrases.no) + ` (เฉลย: "${correct}")`;
+    }
+    updateDashTable(unitNum);
+    updateUnitChip(unitNum);
+    checkUnlock(unitNum);
+    progressEl.textContent = `ข้อ ${idx+1} / ${qs.length}  •  คอมโบ: ${combo} 🔥`;
+    nextBtn.style.display = 'inline-block';
+  }
+  function next(){ idx = (idx+1) % qs.length; if(idx===0) order = shuffleArr(qs.map((_,i)=>i)); render(); }
+  nextBtn.onclick = next;
+  render();
+}
+
+makeQuiz(1, [
+  {s:"There ___ some honey in the jar.", opts:["is","are"], a:"is"},
+  {s:"___ there any pies left?", opts:["Is","Are"], a:"Are"},
+  {s:"There ___ a lot of sausages on the grill.", opts:["is","are"], a:"are"},
+  {s:"How many tomatoes ___ there?", opts:["is","are"], a:"are"},
+  {s:"There ___ any dried shrimp in this dish.", opts:["isn't","aren't"], a:"isn't"},
+  {s:"There ___ any french fries left.", opts:["isn't","aren't"], a:"aren't"},
+  {s:"___ there any chicken in the fridge?", opts:["Is","Are"], a:"Is"},
+  {s:"There ___ some butter on the table.", opts:["is","are"], a:"is"}
+], 'quizMascot1');
+
+makeQuiz(2, [
+  {s:"I am ___ than Carol. (tall)", opts:["taller","tallest"], a:"taller"},
+  {s:"She is ___ girl in the class. (beautiful)", opts:["more beautiful","the most beautiful"], a:"the most beautiful"},
+  {s:"The chocolate cake is ___ than the vanilla cake. (delicious)", opts:["more delicious","most delicious"], a:"more delicious"},
+  {s:"___ is older, Dahlia or Bella?", opts:["Who","Which"], a:"Who"},
+  {s:"___ is faster, a train or a car?", opts:["Who","Which"], a:"Which"},
+  {s:"The comic book is ___ item in the store. (cheap)", opts:["cheaper","the cheapest"], a:"the cheapest"},
+  {s:"A train is ___ than a bike. (fast)", opts:["faster","fastest"], a:"faster"},
+  {s:"He is ___ student in the school. (tall)", opts:["taller","the tallest"], a:"the tallest"}
+], 'quizMascot2');
+
+makeQuiz(3, [
+  {s:"You ___ wear a helmet when you ride a motorcycle.", opts:["must","mustn't"], a:"must"},
+  {s:"You ___ touch an electrical device with wet hands.", opts:["must","mustn't"], a:"mustn't"},
+  {s:"He ___ help his friend when she falls down.", opts:["should","shouldn't"], a:"should"},
+  {s:"You ___ play near the pond.", opts:["should","shouldn't"], a:"shouldn't"},
+  {s:"___ walk on the grass, please.", opts:["Do","Don't"], a:"Don't"},
+  {s:"You ___ fasten your seatbelt in the car.", opts:["must","mustn't"], a:"must"},
+  {s:"___ your homework before you play games.", opts:["Do","Don't"], a:"Do"},
+  {s:"Children ___ cross the road at the crosswalk.", opts:["should","shouldn't"], a:"should"}
+], 'quizMascot3');
+
+makeQuiz(4, [
+  {s:"She ___ goes to school by bus. (always)", opts:["always goes","go always"], a:"always goes"},
+  {s:"___ you always read newspapers?", opts:["Do","Does"], a:"Do"},
+  {s:"___ he play computer games every day?", opts:["Do","Does"], a:"Does"},
+  {s:"How often ___ you go swimming?", opts:["do","does"], a:"do"},
+  {s:"He rides a bike three times ___.", opts:["a week","the week"], a:"a week"},
+  {s:"I go swimming three times ___.", opts:["a month","month a"], a:"a month"},
+  {s:"Riding a motorcycle without a helmet is ___.", opts:["dangerous","exciting"], a:"dangerous"},
+  {s:"___, she doesn't play the piano every day.", opts:["Yes","No"], a:"No"}
+], 'quizMascot4');
+
+/* ---------- lesson path: lock/unlock per unit ---------- */
+const UNLOCK_THRESHOLD = 5; // ตอบถูกกี่ข้อในยูนิตก่อนหน้าถึงจะปลดล็อกยูนิตถัดไป
+const unitTitles = {1:'Our Favorite Dishes', 2:"Who's Better?", 3:'Safety First', 4:'Having Fun with Activities'};
+const unlocked = {1:true, 2:false, 3:false, 4:false};
+
+function starsFor(u){
+  const c = unitStats[u].correct;
+  if(c >= 8) return 3; if(c >= 5) return 2; if(c >= 1) return 1; return 0;
+}
+function updateUnitChip(u){
+  const chip = document.getElementById('unitChip'+u);
+  if(!chip) return;
+  if(!unlocked[u]){ chip.textContent = '🔒 ทำยูนิต '+(u-1)+' ให้ถึง '+UNLOCK_THRESHOLD+' ข้อถูกก่อนน้า'; return; }
+  const stars = '⭐'.repeat(starsFor(u)) + '☆'.repeat(3-starsFor(u));
+  chip.textContent = stars + ' ตอบถูก ' + unitStats[u].correct + '/8 · คอมโบสูงสุด ' + unitStats[u].best;
+}
+function unlockUnit(u){
+  if(u > 4 || unlocked[u]) return;
+  unlocked[u] = true;
+  const wrap = document.getElementById('unitWrap'+u);
+  const badge = document.getElementById('unitBadge'+u);
+  if(wrap) wrap.classList.remove('locked');
+  if(badge) badge.innerHTML = '<span>UNIT</span><strong>'+u+'</strong>';
+  updateUnitChip(u);
+  renderPath();
+  showToast('🔓 ปลดล็อก UNIT ' + u + ': ' + unitTitles[u] + ' แล้ว! ลุยเลย~');
+}
+function checkUnlock(unitNum){
+  updateUnitChip(unitNum);
+  if(unitStats[unitNum].correct >= UNLOCK_THRESHOLD && unitNum < 4){
+    unlockUnit(unitNum + 1);
+  }
+  renderPath();
+}
+// intercept clicks on locked unit headers so they can't be opened
+[2,3,4].forEach(u=>{
+  const head = document.getElementById('unitHead'+u);
+  head.addEventListener('click', function(e){
+    if(!unlocked[u]){
+      e.preventDefault();
+      showToast('🔒 ยังไม่ปลดล็อกน้า ลองทำยูนิต '+(u-1)+' ให้ถึง '+UNLOCK_THRESHOLD+' ข้อถูกก่อน');
+    }
+  });
+});
+
+function scrollToUnit(u){
+  if(!unlocked[u]){
+    const node = document.querySelector('.path-node[data-u="'+u+'"]');
+    if(node){ node.classList.add('shake'); setTimeout(()=>node.classList.remove('shake'), 400); }
+    showToast('🔒 ยังไม่ปลดล็อกน้า ลองทำยูนิต '+(u-1)+' ให้ถึง '+UNLOCK_THRESHOLD+' ข้อถูกก่อน');
+    return;
+  }
+  const target = document.getElementById('unitWrap'+u);
+  if(target){ target.open = true; target.scrollIntoView({behavior:'smooth', block:'start'}); }
+}
+function renderPath(){
+  const wrap = document.getElementById('pathWrap');
+  let html = '';
+  for(let u=1; u<=4; u++){
+    const stars = starsFor(u);
+    const starStr = '⭐'.repeat(stars) + '☆'.repeat(3-stars);
+    html += `<div class="path-node ${unlocked[u] ? (stars===3?'done':'') : 'locked'}" data-u="${u}" onclick="scrollToUnit(${u})">
+      <div class="path-circle">${unlocked[u] ? u : '🔒'}</div>
+      <div class="path-label">${unitTitles[u]}</div>
+      <div class="path-stars">${unlocked[u] ? starStr : ''}</div>
+    </div>`;
+    if(u < 4) html += `<div class="path-line"></div>`;
+  }
+  wrap.innerHTML = html;
+}
+renderPath();
+for(let u=1; u<=4; u++) updateUnitChip(u);
+
+/* ---------- speak-to-teacher ---------- */
+const speakTargets = [
+  {en:"There is some ham in the fridge.", th:"มีแฮมอยู่ในตู้เย็น"},
+  {en:"There isn't any honey left.", th:"ไม่มีน้ำผึ้งเหลือแล้ว"},
+  {en:"Are there any french fries?", th:"มีเฟรนช์ฟรายมั้ย"},
+  {en:"I am taller than Carol.", th:"ฉันสูงกว่าแคโรล"},
+  {en:"Which is faster, a train or a car?", th:"อะไรเร็วกว่ากัน รถไฟหรือรถยนต์"},
+  {en:"You must wear a helmet.", th:"คุณต้องสวมหมวกกันน็อก"},
+  {en:"You shouldn't play near the pond.", th:"คุณไม่ควรเล่นใกล้บ่อน้ำ"},
+  {en:"How often do you go swimming?", th:"คุณไปว่ายน้ำบ่อยแค่ไหน"}
+];
+let speakIdx = 0;
+function normalizeWords(s){ return s.toLowerCase().replace(/[.,!?']/g,'').trim().split(/\s+/).filter(Boolean); }
+function similarity(a, b){
+  const wa = normalizeWords(a), wb = normalizeWords(b);
+  if(wa.join(' ') === wb.join(' ')) return 1;
+  const setB = new Set(wb);
+  const overlap = wa.filter(w => setB.has(w)).length;
+  const union = new Set([...wa, ...wb]).size;
+  return union === 0 ? 0 : overlap / union;
+}
+const hypePhrases = {
+  ok: ["เริ่ดดด เป๊ะไม่มีตก 🔥", "ใช่เลยจ้าาา สิบสิบสิบ!! 🙌", "ปังมากกก ออกเสียงชัดเป๊ะ", "จบ! เป๊ะสุดในรอบนี้ 💅", "โห นางเก่งมาก คือเป๊ะ"],
+  close: ["เฉียดเป๊ะละ! อีกนิดเดียว 🍊", "ใกล้มากกก ลองเน้นคำที่ขาดไปอีกที", "โอเคน้า เกือบสิบเต็มสิบ"],
+  no: ["ยังไม่ตรงเป้าจ้า แต่กล้าพูดคือเก่งละ ลองใหม่แบบมั่นๆ!", "โอเค พลาดนิดหน่อย ลองทีละคำอีกที", "อย่าเพิ่งท้อ! ตาต่อไปปังแน่นอน"]
+};
+function renderSpeakTarget(){
+  const t = speakTargets[speakIdx];
+  document.getElementById('speakTarget').innerHTML = `"${t.en}"<span class="th">${t.th}</span>`;
+  document.getElementById('transcriptBox').innerHTML = 'ครูส้มได้ยินว่า: <i>(ยังไม่พูด)</i>';
+  document.getElementById('hypeFb').className = 'hype-feedback';
+  document.getElementById('speakNext').style.display = 'none';
+  setMood(null, ['speakMascot']);
+}
+function nextSpeak(){ speakIdx = (speakIdx + 1) % speakTargets.length; renderSpeakTarget(); }
+function judgeAttempt(heard){
+  const target = speakTargets[speakIdx].en;
+  const s = similarity(heard, target);
+  document.getElementById('transcriptBox').innerHTML = 'ครูส้มได้ยินว่า: <b>"' + heard + '"</b>';
+  const fb = document.getElementById('hypeFb');
+  fb.className = 'hype-feedback';
+  addCourage(4);
+  recap.speakAttempts++; renderRecap();
+  if(s >= 0.95){ fb.classList.add('ok'); fb.textContent = '🎉 ' + randomOf(hypePhrases.ok); addScore(8); setMood('shy', ['speakMascot']); }
+  else if(s >= 0.6){ fb.classList.add('close'); fb.textContent = '✨ ' + randomOf(hypePhrases.close) + ' (เป้าหมาย: "' + target + '")'; addScore(4); setMood('think', ['speakMascot']); }
+  else { fb.classList.add('no'); fb.textContent = '💛 ' + randomOf(hypePhrases.no) + ' ลองพูดว่า: "' + target + '"'; setMood('cry', ['speakMascot']); }
+  document.getElementById('speakNext').style.display = 'inline-block';
+  setTimeout(()=>setMood(null, ['speakMascot']), 1400);
+}
+const SpeechRecognitionCtor = window.SpeechRecognition || window.webkitSpeechRecognition;
+let recognition = null, listening = false;
+if(SpeechRecognitionCtor){
+  recognition = new SpeechRecognitionCtor();
+  recognition.lang = 'en-US'; recognition.interimResults = false; recognition.maxAlternatives = 1;
+  recognition.onresult = (e)=> judgeAttempt(e.results[0][0].transcript);
+  recognition.onerror = ()=>{ document.getElementById('micHint').textContent = 'ไมค์มีปัญหาหรือไม่ได้รับอนุญาต ลองพิมพ์แทนด้านล่างได้เลย'; stopListeningUI(); };
+  recognition.onend = ()=> stopListeningUI();
+} else {
+  document.getElementById('noSupportNote').textContent = 'เบราว์เซอร์นี้ยังไม่รองรับไมค์ (ลองใช้ Chrome) — พิมพ์ประโยคแทนด้านล่างได้เลยจ้า';
+  document.getElementById('micBtn').disabled = true; document.getElementById('micBtn').style.opacity = '.5';
+}
+function stopListeningUI(){ listening = false; document.getElementById('micBtn').classList.remove('listening'); document.getElementById('micHint').textContent = 'กดไมค์แล้วพูดประโยคด้านบนให้ครูส้มฟัง'; }
+function toggleListening(){
+  if(!recognition) return;
+  if(listening){ recognition.stop(); return; }
+  listening = true;
+  document.getElementById('micBtn').classList.add('listening');
+  document.getElementById('micHint').textContent = 'ฟังอยู่นะ... พูดได้เลยจ้า 🎧';
+  document.getElementById('transcriptBox').innerHTML = 'ครูส้มได้ยินว่า: <i>(กำลังฟัง...)</i>';
+  try{ recognition.start(); } catch(err){ stopListeningUI(); }
+}
+function submitTyped(){
+  const input = document.getElementById('typeFallback');
+  const text = input.value.trim();
+  if(!text) return;
+  judgeAttempt(text); input.value = '';
+}
+document.getElementById('typeFallback').addEventListener('keydown', function(e){ if(e.key === 'Enter') submitTyped(); });
+renderSpeakTarget();
+
+/* ---------- teacher chat ---------- */
+function stripMarkdown(text){
+  return text
+    .replace(/\*\*(.*?)\*\*/g, '$1')
+    .replace(/\*(.*?)\*/g, '$1')
+    .replace(/^>\s?/gm, '')
+    .replace(/^#{1,6}\s?/gm, '')
+    .replace(/`{1,3}(.*?)`{1,3}/g, '$1')
+    .replace(/^[-*]\s+/gm, '');
+}
+function quickAsk(text){ document.getElementById('chatInput').value = text; sendChat(); }
+function addMsg(text, who){
+  const log = document.getElementById('chatlog');
+  const div = document.createElement('div');
+  div.className = 'msg ' + who + ' pop-in';
+  div.textContent = text;
+  log.appendChild(div); log.scrollTop = log.scrollHeight;
+  return div;
+}
+async function sendChat(){
+  const input = document.getElementById('chatInput');
+  const text = input.value.trim();
+  if(!text) return;
+  addMsg(text, 'me'); addCourage(3); input.value = '';
+  setMood('think', ['teacherPanelMascot']);
+  const typingMsg = addMsg('ครูส้มกำลังพิมพ์...', 'teacher');
+  typingMsg.style.opacity = '.6'; typingMsg.style.fontStyle='italic';
+  try{
+    const response = await fetch("https://api.anthropic.com/v1/messages", {
+      method: "POST", headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        model: "claude-sonnet-4-6", max_tokens: 400,
+        messages: [{ role: "user", content: `คุณคือ "ครูส้ม" ครูสอนภาษาอังกฤษออนไลน์ในเว็บแอป PakDee English บุคลิกร่าเริง ตลก ทันเทรนด์ สอนแม่นชัดเจน ครอบคลุม 4 ยูนิต: 1) There is/are, isn't/aren't, Are there any...?, How many...are there? (ของกิน) 2) comparative/superlative adjectives เช่น taller than, the most delicious (เปรียบเทียบ) 3) must/mustn't, should/shouldn't, imperative Do/Don't (กฎความปลอดภัย) 4) adverbs of frequency (always/usually/often/sometimes/never) กับ Do/Does...? How often...? (กิจกรรม) ตอบเป็นภาษาไทยปนอังกฤษนิดหน่อยแบบเป็นกันเอง สั้น กระชับ มีตัวอย่างประโยคเสมอ ไม่เกิน 5-6 บรรทัด ห้ามใช้สัญลักษณ์ markdown ใดๆ เด็ดขาด (ห้ามมี **, ห้ามมี >, ห้ามมีลิสต์ตัวเลข/บูลเล็ต, ห้ามมีหัวข้อ) ให้พิมพ์เป็นข้อความธรรมดาล้วนๆ เหมือนแชทคุยกันปกติ ถ้าจะเน้นคำให้ใช้คำพูดเน้นเสียงหรืออีโมจิแทน ไม่ใช่เครื่องหมายดอกจัน นี่คือคำถามของนักเรียน: "${text}"` }]
+      })
+    });
+    const data = await response.json();
+    typingMsg.remove();
+    const reply = stripMarkdown(data.content.map(b => b.text || '').join('\n').trim()) || 'ขอโทษที ครูส้มงงไปหน่อย ลองถามใหม่อีกทีนะ 🙏';
+    addMsg(reply, 'teacher');
+    setMood('happy', ['teacherPanelMascot']); setTimeout(()=>setMood(null,['teacherPanelMascot']), 900);
+  } catch(err){
+    typingMsg.remove();
+    addMsg('เอ๊ะ เน็ตครูส้มสะดุดแป๊บ ลองพิมพ์ถามอีกทีนะ 🙏', 'teacher');
+    setMood(null, ['teacherPanelMascot']);
+  }
+}
+document.getElementById('chatInput').addEventListener('keydown', function(e){ if(e.key === 'Enter') sendChat(); });
+
+/* ---------- roleplay + missions ---------- */
+function addRpMsg(text, who){
+  const log = document.getElementById('rplog');
+  const div = document.createElement('div');
+  div.className = 'msg ' + who + ' pop-in';
+  div.textContent = text;
+  log.appendChild(div); log.scrollTop = log.scrollHeight;
+  return div;
+}
+let rpHistory = [];
+const missions = { any:false, howmany:false, isnt:false };
+function fillRp(text){ document.getElementById('rpInput').value = text; }
+function checkMissions(text){
+  const lower = text.toLowerCase();
+  let changed = false;
+  if(!missions.any && lower.includes('any')){ missions.any = true; changed = true; }
+  if(!missions.howmany && lower.includes('how many')){ missions.howmany = true; changed = true; }
+  if(!missions.isnt && (lower.includes("isn't") || lower.includes('isnt') || lower.includes("aren't") || lower.includes('arent'))){ missions.isnt = true; changed = true; }
+  if(changed){
+    document.querySelectorAll('#missionList li').forEach(li=>{
+      const key = li.getAttribute('data-m');
+      if(missions[key]){ li.classList.add('done'); li.querySelector('.mission-box').textContent = '✓'; }
+    });
+    addScore(4); addCourage(2);
+    if(missions.any && missions.howmany && missions.isnt){
+      const banner = document.getElementById('missionBanner');
+      if(banner.style.display !== 'block'){ banner.style.display = 'block'; addScore(15); addCourage(10); }
+    }
+  }
+}
+async function sendRoleplay(){
+  const input = document.getElementById('rpInput');
+  const text = input.value.trim();
+  if(!text) return;
+  addRpMsg(text, 'me');
+  addCourage(4);
+  recap.roleplayTurns++; document.getElementById('dashRp').textContent = recap.roleplayTurns; renderRecap();
+  checkMissions(text);
+  rpHistory.push({role:'user', content:text});
+  input.value = '';
+  const typingMsg = addRpMsg('ป้าส้มกำลังพิมพ์...', 'teacher');
+  typingMsg.style.opacity = '.6'; typingMsg.style.fontStyle = 'italic';
+  try{
+    const response = await fetch("https://api.anthropic.com/v1/messages", {
+      method: "POST", headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        model: "claude-sonnet-4-6", max_tokens: 300,
+        messages: [{ role: "user", content: `คุณคือ "ป้าส้ม" แม่ค้าขายของกินใจดี อารมณ์ดี ขี้เล่น ในสถานการณ์โรลเพลย์ฝึกภาษาอังกฤษ ลูกค้ากำลังฝึกใช้ท่าพูด "There is/are", "Is/Are there any...?", "How many...are there?" เกี่ยวกับของกินในร้าน (bacon, ham, honey, pies, french fries, sausages, tomato ฯลฯ) กติกา: 1) ตอบเป็นภาษาอังกฤษง่ายๆ สั้นๆ 1-2 ประโยค ต่อด้วยคำถามชวนคุยต่อเสมอ 2) ถ้าลูกค้าพูดผิดไวยากรณ์เล็กน้อย อย่าแก้แบบเป็นทางการ ให้ตอบรับอย่างเป็นธรรมชาติแล้วสอดแทรกรูปประโยคที่ถูกไว้ในคำตอบแบบเนียนๆ 3) ให้กำลังใจเสมอ ไม่มีคำตำหนิ 4) อาจแทรกคำแปลไทยสั้นๆ ท้ายประโยคได้ถ้าจำเป็น 5) ห้ามใช้สัญลักษณ์ markdown ใดๆ เด็ดขาด (ห้ามมี **, ห้ามมี >, ห้ามมีลิสต์ตัวเลข/บูลเล็ต) พิมพ์เป็นข้อความธรรมดาล้วนๆ เหมือนแชทจริง ประวัติสนทนา: ${JSON.stringify(rpHistory.slice(-6))} ข้อความล่าสุด: "${text}"` }]
+      })
+    });
+    const data = await response.json();
+    typingMsg.remove();
+    const reply = stripMarkdown(data.content.map(b => b.text || '').join('\n').trim()) || "Oops, ป้าส้มลืมพูดแป๊บ ลองพิมพ์อีกทีนะจ๊ะ";
+    addRpMsg(reply, 'teacher');
+    rpHistory.push({role:'assistant', content:reply});
+  } catch(err){
+    typingMsg.remove();
+    addRpMsg("เอ๊ะ ร้านป้าส้มเน็ตสะดุดแป๊บ ลองพิมพ์ถามอีกทีนะจ๊ะ 🙏", 'teacher');
+  }
+}
+document.getElementById('rpInput').addEventListener('keydown', function(e){ if(e.key === 'Enter') sendRoleplay(); });
+
+/* ---------- mood-check survey ---------- */
+const surveyQs = [
+  "กล้าพูดภาษาอังกฤษมากขึ้นมั้ย?",
+  "สนุกกับการเรียนวันนี้มั้ย?",
+  "มั่นใจที่จะสื่อสารภาษาอังกฤษในสถานการณ์จริงแค่ไหน?",
+  "อยากฝึกภาษาอังกฤษเพิ่มเติมด้วยตัวเองมั้ย?"
+];
+const moodEmojis = ['😞','😐','🙂','😃','🤩'];
+const surveyAnswers = {};
+const surveyWrap = document.getElementById('surveyItems');
+surveyQs.forEach((q, i)=>{
+  const item = document.createElement('div');
+  item.className = 'survey-item';
+  let btns = '';
+  moodEmojis.forEach((emo, vi)=>{ btns += `<button class="mood-btn" data-q="${i}" data-v="${vi+1}" onclick="pickMood(${i},${vi+1},this)">${emo}</button>`; });
+  item.innerHTML = `<div class="survey-q">${i+1}. ${q}</div><div class="mood-row">${btns}</div>`;
+  surveyWrap.appendChild(item);
+});
+function pickMood(qIdx, val, btn){
+  surveyAnswers[qIdx] = val;
+  [...btn.parentElement.children].forEach(b => b.classList.remove('sel'));
+  btn.classList.add('sel');
+}
+let surveyPreAvg = null, surveyPostAvg = null;
+const feedbackLog = [];
+function saveSurvey(stage){
+  const vals = Object.values(surveyAnswers);
+  if(vals.length < surveyQs.length){ alert('ตอบให้ครบทุกข้อก่อนนะ (' + vals.length + '/' + surveyQs.length + ')'); return; }
+  const avg = vals.reduce((a,b)=>a+b,0) / vals.length;
+  if(stage === 'pre'){ surveyPreAvg = avg; } else { surveyPostAvg = avg; }
+  const text = document.getElementById('surveyText').value.trim();
+  if(text){
+    feedbackLog.push('[' + (stage==='pre'?'ก่อนเรียน':'หลังเรียน') + '] ' + text);
+    document.getElementById('dashFeedbackList').innerHTML = feedbackLog.map(f=>`<div class="fbline">💬 ${f}</div>`).join('');
+  }
+  renderSurveyResult(); addCourage(3);
+}
+function renderSurveyResult(){
+  const result = document.getElementById('surveyResult');
+  result.style.display = 'block';
+  const barPre = document.getElementById('barPre'), barPost = document.getElementById('barPost');
+  const pre = surveyPreAvg || 0, post = surveyPostAvg || 0;
+  barPre.style.width = (pre/5*100) + '%'; barPre.textContent = surveyPreAvg ? pre.toFixed(1) + '/5' : '';
+  barPost.style.width = (post/5*100) + '%'; barPost.textContent = surveyPostAvg ? post.toFixed(1) + '/5' : '';
+  const note = document.getElementById('surveyNote');
+  const dashNote = document.getElementById('dashSurveyNote');
+  if(surveyPreAvg && surveyPostAvg){
+    const diff = (surveyPostAvg - surveyPreAvg).toFixed(1);
+    const msg = diff > 0 ? `📈 เพิ่มขึ้น ${diff} จุด` : (diff < 0 ? `📉 ลดลง ${Math.abs(diff)} จุด` : `คะแนนเท่าเดิม`);
+    note.textContent = msg + ' — ข้อมูลนี้ใช้เทียบผลก่อน-หลังในงานวิจัยได้เลย';
+    dashNote.textContent = `แบบประเมิน: ก่อนเรียน ${surveyPreAvg.toFixed(1)}/5 · หลังเรียน ${surveyPostAvg.toFixed(1)}/5 (${msg})`;
+  } else if(surveyPreAvg){
+    note.textContent = 'บันทึกก่อนเรียนแล้ว — ลองทำกิจกรรมด้านบนแล้วค่อยกลับมาบันทึก "หลังเรียน" นะ';
+    dashNote.textContent = `แบบประเมิน: ก่อนเรียน ${surveyPreAvg.toFixed(1)}/5 · ยังไม่มีข้อมูลหลังเรียน`;
+  } else {
+    note.textContent = 'บันทึกหลังเรียนแล้ว — ลองบันทึก "ก่อนเรียน" ไว้เทียบด้วยนะ';
+    dashNote.textContent = `แบบประเมิน: หลังเรียน ${surveyPostAvg.toFixed(1)}/5 · ยังไม่มีข้อมูลก่อนเรียน`;
+  }
+}
+</script>
+</body>
+</html>
